@@ -15,12 +15,12 @@ class GameTypeSeeder extends Seeder
     {
         $fake = Faker::create();
 
-        DB::table('game_types')->insert([
+        \App\GameType::create([
             'name' => "20 to 15",
             'description' => $fake->sentence,
         ]);
 
-        DB::table('game_types')->insert([
+        \App\GameType::create([
             'name' => "201",
             'description' => $fake->sentence,
         ]);
