@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
         DB::table('games')->truncate();
         DB::table('multipliers')->truncate();
         DB::table('points')->truncate();
+        DB::table('throws')->truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1');
 
         $this->call(UserTypeSeeder::class);
@@ -26,5 +27,6 @@ class DatabaseSeeder extends Seeder
         $this->call(GameSeeder::class);
         $this->call(MultiplierSeeder::class);
         $this->call(PointSeeder::class);
+        $this->call(ThrowSeeder::class);
     }
 }
