@@ -17,13 +17,12 @@ class GameSeeder extends Seeder
 
         $gameTypesIds = DB::table('game_types')->pluck('id')->toArray();
 
-        foreach(range(1, 20) as $index)
+        foreach (range(1, 20) as $index)
         {
             \App\Game::create([
                 'started_at' => $fake->dateTime(),
-                'gametype_id' => $fake->randomElement($gameTypesIds)
+                'game_type_id' => $fake->randomElement($gameTypesIds)
             ]);
         }
-
     }
 }
