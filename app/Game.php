@@ -14,4 +14,9 @@ class Game extends Model
     {
         return $this->belongsTo(GameType::class);
     }
+
+    public function casts()
+    {
+        return $this->hasMany(Cast::class);
+    }
 }
