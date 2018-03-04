@@ -12,4 +12,9 @@ class Cast extends Model
     protected $fillable = [
         'user_id', 'game_id', 'point_id'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
