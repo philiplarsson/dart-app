@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Faker\Factory as Faker;
 
 class PointSeeder extends Seeder
 {
@@ -12,14 +11,25 @@ class PointSeeder extends Seeder
      */
     public function run()
     {
-        $fake = Faker::create();
         $multiplierIds = DB::table('multipliers')->pluck('id')->toArray();
 
         foreach (range(1, 20) as $index) {
-            DB::table('points')->insert([
-                'pie_value' => $fake->numberBetween(1, 20),
-                'multiplier_id' => $fake->randomElement($multiplierIds)
-            ]);
+            foreach ($multiplierIds as $multiplier) {
+                DB::table('points')->insert([
+                    'pie_value' => $index,
+                    'multiplier_id' => $multiplier
+                ]);
+            }
         }
+
+        // Add Bullseye
+        DB::table('points')->insert([
+            'pie_value' => 25,
+            'multiplier_id' => DB::table('multipliers')->where('value', 1)->value('id')
+        ]);
+        DB::table('points')->insert([
+            'pie_value' => 50,
+            'multiplier_id' => DB::table('multipliers')->where('value', 1)->value('id')
+        ]);
     }
 }
