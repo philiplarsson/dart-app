@@ -13,8 +13,10 @@ class DatabaseSeeder extends Seeder
     {
         DB::table('user_types')->truncate();
         DB::table('users')->truncate();
+        DB::table('game_types')->truncate();
 
         $this->call(UserTypeSeeder::class);
         $this->call(UserTableSeeder::class);
+        $this->call(GameTypeSeeder::class);
     }
 }
