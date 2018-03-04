@@ -20,7 +20,7 @@ class ThrowSeeder extends Seeder
         $pointIds = DB::table('points')->pluck('id')->toArray();
 
         foreach (range(1, 30) as $index) {
-            DB::table('throws')->insert([
+            \App\Cast::create([
                 'user_id' => $fake->randomElement($userIds),
                 'game_id' => $fake->randomElement($gameIds),
                 'point_id' => $fake->randomElement($pointIds)
