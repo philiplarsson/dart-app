@@ -15,7 +15,7 @@ class CreateGamesTable extends Migration
     {
         Schema::create('games', function (Blueprint $table) {
             $table->increments('id');
-            $table->date('started_at');
+            $table->timestamp('started_at');
             $table->integer('gametype_id')->unsigned();
             $table->foreign('gametype_id')->references('id')->on('game_types')->onDelete('cascade');
             $table->timestamps();
