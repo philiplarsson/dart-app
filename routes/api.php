@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 
 Route::prefix('v1')->group(function () {
 
-    Route::prefix('user')->group(function () {
+    Route::prefix('users')->group(function () {
         // Route::middleware('auth:api')->get('/user', function (Request $request) {
         //     return $request->user();
         // });
@@ -26,7 +26,7 @@ Route::prefix('v1')->group(function () {
         Route::delete('/{id}', 'API\UserController@destroy');
     });
 
-    Route::prefix('game')->group(function () {
+    Route::prefix('games')->group(function () {
         Route::get('/', 'API\GameController@index');
     });
 });
