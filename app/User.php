@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -15,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'type_id'
+        'name', 'username', 'email', 'password', 'type_id'
     ];
 
     /**
@@ -30,5 +31,15 @@ class User extends Authenticatable
     public function casts()
     {
         return $this->hasMany(Cast::class);
+    }
+
+    public function accountType()
+    {
+        return DB::table('user_types')->where('id', $this->type_id)->first()->type;
+    }
+
+    public function avatar()
+    {
+        return "https://www.gravatar.com/avatar/" . md5($this->email) .'?s=80&d=retro';
     }
 }
