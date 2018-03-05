@@ -29,4 +29,12 @@ Route::prefix('v1')->group(function () {
     Route::prefix('games')->group(function () {
         Route::get('/', 'API\GameController@index');
     });
+
+    Route::prefix('gametypes')->group(function () {
+        Route::get('/', 'API\GameTypeController@index');
+        Route::post('/', 'API\GameTypeController@store');
+        Route::get('/{id}', 'API\GameTypeController@show');
+        Route::patch('/{id}', 'API\GameTypeController@update');
+        Route::delete('/{id}', 'API\GameTypeController@destroy');
+    });
 });
