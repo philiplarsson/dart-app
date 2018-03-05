@@ -48,6 +48,12 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if ($request->expectsJson()) {
+            if ($exception instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException) {
+                return response(null, 404)
+                    ->header('Content-Type', 'application/json');
+            }
+        }
         return parent::render($request, $exception);
     }
 }

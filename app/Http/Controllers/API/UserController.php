@@ -65,11 +65,7 @@ class UserController extends Controller
         $user = User::find($id);
 
         if (!$user) {
-            return Response::json([
-                'error' => [
-                    'User does not exist'
-                ]
-            ], 404);
+            abort(\Illuminate\Http\Response::HTTP_NOT_FOUND);
         }
 
         return fractal()
