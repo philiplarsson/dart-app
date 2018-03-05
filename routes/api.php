@@ -23,5 +23,6 @@ Route::prefix('v1')->group(function () {
         Route::post('/', 'API\UserController@store');
         Route::get('/{id}', 'API\UserController@show');
         Route::patch('/{id}', 'API\UserController@update');
+        Route::delete('/{id}', 'API\UserController@destroy');
     });
 });

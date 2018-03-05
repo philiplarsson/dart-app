@@ -109,6 +109,14 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::find($id);
+
+        if (!$user) {
+            abort(\Illuminate\Http\Response::HTTP_NOT_FOUND);
+        }
+
+        $user->delete();
+
+        return response(null, 204);
     }
 }
