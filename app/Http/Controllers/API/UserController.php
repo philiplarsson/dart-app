@@ -6,6 +6,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Transformers\UserTransformer;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Response;
@@ -81,9 +82,23 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateUserRequest $request, $id)
     {
-        //
+        $user = User::find($id);
+
+        if (!$user) {
+            abort(\Illuminate\Http\Response::HTTP_NOT_FOUND);
+        }
+
+        $user->username = $request->input('username', $user->username);
+        $user->email = $request->input('email', $user->email);
+        $user->name = $request->input('name', $user->name);
+        $user->save();
+
+        return fractal()
+            ->item($user)
+            ->transformWith(new UserTransformer)
+            ->toArray();
     }
 
     /**

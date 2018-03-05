@@ -53,6 +53,14 @@ class Handler extends ExceptionHandler
                 return response(null, 404)
                     ->header('Content-Type', 'application/json');
             }
+
+            if ($exception instanceof \Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException) {
+                return response([
+                    'errors' => [
+                        $request->method() . ' is not supported. '
+                    ]
+                ], 405)->header('Content-Type', 'application/json');
+            }
         }
         return parent::render($request, $exception);
     }
