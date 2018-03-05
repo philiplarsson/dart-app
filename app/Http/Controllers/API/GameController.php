@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\API;
 
 use App\Game;
-use App\Transformers\GameTransformer;
+use App\GameType;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Transformers\GameTransformer;
+use App\Http\Requests\StoreGameRequest;
+use App\Http\Requests\UpdateGameRequest;
 
 class GameController extends Controller
 {
@@ -17,6 +20,7 @@ class GameController extends Controller
     public function index()
     {
         $games = Game::all();
+
         return fractal()
             ->collection($games)
             ->transformWith(new GameTransformer)
@@ -29,9 +33,18 @@ class GameController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreGameRequest $request)
     {
-        //
+        $game = new Game;
+        $gameType = GameType::find($request->input('game_type_id'));
+        $game->gameType()->associate($gameType);
+
+        $game->save();
+
+        return fractal()
+            ->item($game)
+            ->transformWith(new GameTransformer)
+            ->toArray();
     }
 
     /**
@@ -42,7 +55,16 @@ class GameController extends Controller
      */
     public function show($id)
     {
-        //
+        $game = Game::find($id);
+
+        if (!$game) {
+            abort(\Illuminate\Http\Response::HTTP_NOT_FOUND);
+        }
+
+        return fractal()
+            ->item($game)
+            ->transformWith(new GameTransformer)
+            ->toArray();
     }
 
     /**
@@ -52,9 +74,23 @@ class GameController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateGameRequest $request, $id)
     {
-        //
+        $game = Game::find($id);
+
+        if (!$game) {
+            abort(\Illuminate\Http\Response::HTTP_NOT_FOUND);
+        }
+
+        $gameType = GameType::find($request->input('game_type_id'));
+        $game->gameType()->associate($gameType);
+
+        $game->save();
+
+        return fractal()
+            ->item($game)
+            ->transformWith(new GameTransformer)
+            ->toArray();
     }
 
     /**
@@ -65,6 +101,14 @@ class GameController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $game = Game::find($id);
+
+        if (!$game) {
+            abort(\Illuminate\Http\Response::HTTP_NOT_FOUND);
+        }
+
+        $game->delete();
+
+        return response(null, 204);
     }
 }
