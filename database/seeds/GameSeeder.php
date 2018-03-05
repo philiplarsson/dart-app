@@ -20,7 +20,6 @@ class GameSeeder extends Seeder
         foreach (range(1, 20) as $index)
         {
             \App\Game::create([
-                'started_at' => $fake->dateTime(),
                 'game_type_id' => $fake->randomElement($gameTypesIds)
             ]);
         }

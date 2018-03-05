@@ -25,4 +25,8 @@ Route::prefix('v1')->group(function () {
         Route::patch('/{id}', 'API\UserController@update');
         Route::delete('/{id}', 'API\UserController@destroy');
     });
+
+    Route::prefix('game')->group(function () {
+        Route::get('/', 'API\GameController@index');
+    });
 });
