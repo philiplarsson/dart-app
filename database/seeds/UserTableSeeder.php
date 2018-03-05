@@ -23,7 +23,7 @@ class UserTableSeeder extends Seeder
                 'name' => $fake->name,
                 'username' => $fake->userName,
                 'email' => $fake->email,
-                'password' => $fake->password,
+                'password' => bcrypt($fake->password),
                 'type_id' => $fake->randomElement($userTypeIds)
             ]);
         }
