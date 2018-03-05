@@ -19,7 +19,11 @@ class UserController extends Controller
      */
     public function index()
     {
-        return User::all();
+        $users = User::all();
+        return fractal()
+            ->collection($users)
+            ->transformWith(new UserTransformer)
+            ->toArray();
     }
 
     /**
@@ -67,6 +71,7 @@ class UserController extends Controller
                 ]
             ], 404);
         }
+
         return fractal()
             ->item($user)
             ->transformWith(new UserTransformer)

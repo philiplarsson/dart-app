@@ -17,7 +17,7 @@ class UserTableSeeder extends Seeder
 
         $userTypeIds = DB::table('user_types')->pluck('id')->toArray();
 
-        foreach (range(1, 5) as $index)
+        foreach (range(1, 10) as $index)
         {
             \App\User::create([
                 'name' => $fake->name,
