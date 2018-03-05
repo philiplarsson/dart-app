@@ -8,7 +8,6 @@ use League\Fractal\TransformerAbstract;
 
 class GameTransformer extends TransformerAbstract
 {
-
     protected $defaultIncludes = [
         'gametype'
     ];

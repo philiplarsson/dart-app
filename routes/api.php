@@ -41,4 +41,12 @@ Route::prefix('v1')->group(function () {
         Route::patch('/{id}', 'API\GameTypeController@update');
         Route::delete('/{id}', 'API\GameTypeController@destroy');
     });
+
+    Route::prefix('throws')->group(function () {
+        Route::get('/', 'API\CastController@index');
+        Route::post('/', 'API\CastController@store');
+        Route::get('/{id}', 'API\CastController@show');
+        Route::patch('/{id}', 'API\CastController@update');
+        Route::delete('/{id}', 'API\CastController@destroy');
+    });
 });

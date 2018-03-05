@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 
 class Cast extends Model
@@ -21,5 +22,16 @@ class Cast extends Model
     public function game()
     {
         return $this->belongsTo(Game::class);
+    }
+
+    public function point()
+    {
+        return DB::table('points')->where('id', $this->point_id)->first();
+    }
+
+    public function multiplier()
+    {
+        $point = $this->point();
+        return DB::table('multipliers')->where('id', $point->multiplier_id)->first();
     }
 }
