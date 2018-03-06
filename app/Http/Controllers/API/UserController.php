@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\API;
 
 use App\User;
+use App\Cast;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Transformers\CastTransformer;
+use App\Transformers\UserTransformer;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
-use App\Transformers\UserTransformer;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Response;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 
@@ -122,5 +124,25 @@ class UserController extends Controller
         $user->delete();
 
         return response(null, 204);
+    }
+
+    public function throws($id)
+    {
+        $user = User::find($id);
+
+        if (!$user) {
+            abort(\Illuminate\Http\Response::HTTP_NOT_FOUND);
+        }
+
+        $paginator = $user->casts()->paginate(10);
+        $castCollection = $paginator->getCollection();
+
+        return fractal()
+            ->collection($castCollection)
+            ->transformWith(new CastTransformer)
+            ->parseExcludes('user')
+            ->parseExcludes('game')
+            ->paginateWith(new IlluminatePaginatorAdapter($paginator))
+            ->toArray();
     }
 }
