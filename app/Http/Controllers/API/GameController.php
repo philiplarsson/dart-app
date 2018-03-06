@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Transformers\GameTransformer;
 use App\Http\Requests\StoreGameRequest;
 use App\Http\Requests\UpdateGameRequest;
+use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 
 class GameController extends Controller
 {
@@ -17,13 +18,21 @@ class GameController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $games = Game::all();
+        $sortBy = $request->query('sort_by');
+        if ($sortBy === 'asc') {
+            $paginator = Game::oldestFirst()->paginate(10);
+        } else {
+            $paginator = Game::latestFirst()->paginate(10);
+        }
+
+        $gameCollection = $paginator->getCollection();
 
         return fractal()
-            ->collection($games)
+            ->collection($gameCollection)
             ->transformWith(new GameTransformer)
+            ->paginateWith(new IlluminatePaginatorAdapter($paginator))
             ->toArray();
     }
 

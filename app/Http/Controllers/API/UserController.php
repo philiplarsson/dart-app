@@ -10,6 +10,7 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Transformers\UserTransformer;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Response;
+use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 
 class UserController extends Controller
 {
@@ -20,10 +21,13 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $paginator = User::paginate(10);
+        $userCollection = $paginator->getCollection();
+
         return fractal()
-            ->collection($users)
+            ->collection($userCollection)
             ->transformWith(new UserTransformer)
+            ->paginateWith(new IlluminatePaginatorAdapter($paginator))
             ->toArray();
     }
 

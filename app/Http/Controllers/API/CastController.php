@@ -20,9 +20,15 @@ class CastController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $paginator = Cast::paginate(50);
+        $sortBy = $request->query('sort_by');
+        if ($sortBy === 'asc') {
+            $paginator = Cast::oldestFirst()->paginate(50);
+        } else {
+            $paginator = Cast::latestFirst()->paginate(50);
+        }
+
         $castCollection = $paginator->getCollection();
 
         return fractal()
