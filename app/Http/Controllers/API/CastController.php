@@ -11,6 +11,7 @@ use App\Transformers\CastTransformer;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCastRequest;
 use App\Http\Requests\UpdateCastRequest;
+use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 
 class CastController extends Controller
 {
@@ -21,11 +22,13 @@ class CastController extends Controller
      */
     public function index()
     {
-        $cast = Cast::all();
+        $paginator = Cast::paginate(50);
+        $castCollection = $paginator->getCollection();
 
         return fractal()
-            ->collection($cast)
+            ->collection($castCollection)
             ->transformWith(new CastTransformer)
+            ->paginateWith(new IlluminatePaginatorAdapter($paginator))
             ->toArray();
     }
 
