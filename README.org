@@ -38,7 +38,6 @@ API is automatically exported and can be seen below and in [[api.md]].
 | GET    | api/v1/users/{id}/throws |      | App\Http\Controllers\API\UserController@throws      | api        |
 
 
-
 *** Sort Response
 For some routes the order can be sorted in reverse order by using a query
 parameter like so:
