@@ -134,7 +134,7 @@ class UserController extends Controller
             abort(\Illuminate\Http\Response::HTTP_NOT_FOUND);
         }
 
-        $paginator = $user->casts()->paginate(10);
+        $paginator = $user->casts()->paginate(50);
         $castCollection = $paginator->getCollection();
 
         return fractal()

@@ -33,6 +33,7 @@ Route::prefix('v1')->group(function () {
         Route::get('/{id}', 'API\GameController@show');
         Route::patch('/{id}', 'API\GameController@update');
         Route::delete('/{id}', 'API\GameController@destroy');
+        Route::get('/{id}/throws', 'API\GameController@throws');
     });
 
     Route::prefix('gametypes')->group(function () {

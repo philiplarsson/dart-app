@@ -7,6 +7,7 @@ use App\GameType;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Transformers\GameTransformer;
+use App\Transformers\CastTransformer;
 use App\Http\Requests\StoreGameRequest;
 use App\Http\Requests\UpdateGameRequest;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
@@ -119,5 +120,25 @@ class GameController extends Controller
         $game->delete();
 
         return response(null, 204);
+    }
+
+    public function throws($id)
+    {
+        $game = Game::find($id);
+
+        if (!$game) {
+            abort(\Illuminate\Http\Response::HTTP_NOT_FOUND);
+        }
+
+        $paginator = $game->casts()->paginate(50);
+        $castCollection = $paginator->getCollection();
+
+        return fractal()
+            ->collection($castCollection)
+            ->transformWith(new CastTransformer)
+            ->parseExcludes('user')
+            ->parseExcludes('game')
+            ->paginateWith(new IlluminatePaginatorAdapter($paginator))
+            ->toArray();
     }
 }
