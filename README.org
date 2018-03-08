@@ -1,0 +1,57 @@
+* DartApp
+
+** API
+DartApp uses a RESTful API. The API is Work In Progress.
+
+When making requests, the following headers should be set:
+- Accept: application/json
+- Content-Type: application/json
+
+API is automatically exported and can be seen below and in [[api.md]]. 
+
+
+*** Available Routes
+| Method | URI                      | Name | Action                                              | Middleware |
+|--------+--------------------------+------+-----------------------------------------------------+------------|
+| GET    | /                        |      | Closure                                             | web        |
+| GET    | api/v1/games             |      | App\Http\Controllers\API\GameController@index       | api        |
+| POST   | api/v1/games             |      | App\Http\Controllers\API\GameController@store       | api        |
+| DELETE | api/v1/games/{id}        |      | App\Http\Controllers\API\GameController@destroy     | api        |
+| PATCH  | api/v1/games/{id}        |      | App\Http\Controllers\API\GameController@update      | api        |
+| GET    | api/v1/games/{id}        |      | App\Http\Controllers\API\GameController@show        | api        |
+| GET    | api/v1/games/{id}/throws |      | App\Http\Controllers\API\GameController@throws      | api        |
+| POST   | api/v1/gametypes         |      | App\Http\Controllers\API\GameTypeController@store   | api        |
+| GET    | api/v1/gametypes         |      | App\Http\Controllers\API\GameTypeController@index   | api        |
+| GET    | api/v1/gametypes/{id}    |      | App\Http\Controllers\API\GameTypeController@show    | api        |
+| PATCH  | api/v1/gametypes/{id}    |      | App\Http\Controllers\API\GameTypeController@update  | api        |
+| DELETE | api/v1/gametypes/{id}    |      | App\Http\Controllers\API\GameTypeController@destroy | api        |
+| GET    | api/v1/throws            |      | App\Http\Controllers\API\CastController@index       | api        |
+| POST   | api/v1/throws            |      | App\Http\Controllers\API\CastController@store       | api        |
+| GET    | api/v1/throws/{id}       |      | App\Http\Controllers\API\CastController@show        | api        |
+| PATCH  | api/v1/throws/{id}       |      | App\Http\Controllers\API\CastController@update      | api        |
+| DELETE | api/v1/throws/{id}       |      | App\Http\Controllers\API\CastController@destroy     | api        |
+| POST   | api/v1/users             |      | App\Http\Controllers\API\UserController@store       | api        |
+| GET    | api/v1/users             |      | App\Http\Controllers\API\UserController@index       | api        |
+| DELETE | api/v1/users/{id}        |      | App\Http\Controllers\API\UserController@destroy     | api        |
+| PATCH  | api/v1/users/{id}        |      | App\Http\Controllers\API\UserController@update      | api        |
+| GET    | api/v1/users/{id}        |      | App\Http\Controllers\API\UserController@show        | api        |
+| GET    | api/v1/users/{id}/throws |      | App\Http\Controllers\API\UserController@throws      | api        |
+
+
+
+*** Sort Response
+For some routes the order can be sorted in reverse order by using a query
+parameter like so:
+
+- GET ~http://localhost:8000/api/v1/throws?sort_by=asc~
+- GET ~http://localhost:8000/api/v1/games?sort_by=asc~
+
+If no query parameter is specified the result is ordered in descending order
+(latest first). 
+
+*** Pagination
+Pagination is used for enpoints where the data is /large/.
+Add query parameter =page= like so:
+
+- GET ~http://localhost:8000/api/v1/throws?page=2~
+
