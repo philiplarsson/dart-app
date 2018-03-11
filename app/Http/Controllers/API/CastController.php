@@ -49,6 +49,8 @@ class CastController extends Controller
     {
         if (requestContainsMultipleObjects()) {
             $casts = array();
+            DB::beginTransaction();
+
             foreach ($request->all() as $data) {
                 try {
                     $casts[] = $this->createCast(
@@ -58,6 +60,7 @@ class CastController extends Controller
                         $data['multiplier']
                     );
                 } catch (NoSuchSectionExistsException $e) {
+                    DB::rollBack();
                     return response([
                         'errors' => [
                             $e->getMessage()
@@ -65,6 +68,8 @@ class CastController extends Controller
                     ], 422)->header('Content-Type', 'application/json');
                 }
             }
+
+            DB::commit();
             return fractal()
                 ->collection($casts)
                 ->transformWith(new CastTransformer)
