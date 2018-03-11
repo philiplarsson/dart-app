@@ -23,11 +23,20 @@ class StoreCastRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'user_id' => 'required|integer|exists:users,id',
-            'game_id' => 'required|integer|exists:games,id',
-            'pie_value' => 'required|integer|exists:points,pie_value',
-            'multiplier' => 'required|integer|exists:multipliers,value'
-        ];
+        if (requestContainsMultipleObjects()) {
+            return [
+                '*.user_id' => 'required|integer|exists:users,id',
+                '*.game_id' => 'required|integer|exists:games,id',
+                '*.pie_value' => 'required|integer|exists:points,pie_value',
+                '*.multiplier' => 'required|integer|exists:multipliers,value'
+            ];
+        } else {
+            return [
+                'user_id' => 'required|integer|exists:users,id',
+                'game_id' => 'required|integer|exists:games,id',
+                'pie_value' => 'required|integer|exists:points,pie_value',
+                'multiplier' => 'required|integer|exists:multipliers,value'
+            ];
+        }
     }
 }

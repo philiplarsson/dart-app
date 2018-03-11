@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Cast;
 use App\User;
 use App\Game;
+use App\Exceptions\NoSuchSectionExistsException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Transformers\CastTransformer;
@@ -46,33 +47,39 @@ class CastController extends Controller
      */
     public function store(StoreCastRequest $request)
     {
-        $cast = new Cast;
-
-        $user = User::find($request->user_id);
-        $game = Game::find($request->game_id);
-        $multiplier = DB::table('multipliers')->where('value', $request->multiplier)->first();
-        $point = DB::table('points')
-            ->where('pie_value', $request->pie_value)
-            ->where('multiplier_id', $multiplier->id)
-            ->first();
-
-        if (!$point) {
-            return response([
-                'errors' => [
-                    'No such combination of multiplier and pie value exists. '
-                    ]
-                ], 422)->header('Content-Type', 'application/json');
+        if (requestContainsMultipleObjects()) {
+            $casts = array();
+            foreach ($request->all() as $data) {
+                try {
+                    $casts[] = $this->createCast(
+                        $data['user_id'],
+                        $data['game_id'],
+                        $data['pie_value'],
+                        $data['multiplier']
+                    );
+                } catch (NoSuchSectionExistsException $e) {
+                    return response([
+                        'errors' => [
+                            $e->getMessage()
+                        ]
+                    ], 422)->header('Content-Type', 'application/json');
+                }
+            }
+            return fractal()
+                ->collection($casts)
+                ->transformWith(new CastTransformer)
+                ->parseExcludes('user')
+                ->parseExcludes('game')
+                ->toArray();
+        } else {
+            $cast = $this->createCast($request->user_id, $request->game_id, $request->pie_value, $request->multiplier);
+            return fractal()
+                ->item($cast)
+                ->transformWith(new CastTransformer)
+                ->parseExcludes('user')
+                ->parseExcludes('game')
+                ->toArray();
         }
-        $cast->user()->associate($user);
-        $cast->game()->associate($game);
-        $cast->point_id = $point->id;
-
-        $cast->save();
-
-        return fractal()
-            ->item($cast)
-            ->transformWith(new CastTransformer)
-            ->toArray();
     }
 
     /**
@@ -124,8 +131,8 @@ class CastController extends Controller
             return response([
                 'errors' => [
                     'No such combination of multiplier and pie value exists. '
-                    ]
-                ], 422)->header('Content-Type', 'application/json');
+                ]
+            ], 422)->header('Content-Type', 'application/json');
         }
 
         $cast->user()->associate($user);
@@ -157,5 +164,35 @@ class CastController extends Controller
         $cast->delete();
 
         return response(null, 204);
+    }
+
+    private function createCast($user_id, $game_id, $pie_value, $multiplier_value)
+    {
+        $cast = new Cast;
+        $user = User::find($user_id);
+        $game = Game::find($game_id);
+        $multiplier = DB::table('multipliers')->where('value', $multiplier_value)->first();
+        $point = DB::table('points')
+            ->where('pie_value', $pie_value)
+            ->where('multiplier_id', $multiplier->id)
+            ->first();
+
+        if (!$point) {
+            throw new NoSuchSectionExistsException(
+                sprintf(
+                    "No such combination of multiplier (%d) and pie value (%d) exists.",
+                    $multiplier_value,
+                    $pie_value
+                )
+            );
+        }
+
+        $cast->user()->associate($user);
+        $cast->game()->associate($game);
+        $cast->point_id = $point->id;
+
+        $cast->save();
+
+        return $cast;
     }
 }
