@@ -1,8 +1,9 @@
 <?php
 
-function requestIsArray()
-{
-    $data = Request::all();
-    // $data = $request->all();
-    return is_array(reset($data));
+if (!function_exists('requestContainsMultipleObjects')) {
+    function requestContainsMultipleObjects()
+    {
+        $data = Request::all();
+        return is_array(reset($data));
+    }
 }
