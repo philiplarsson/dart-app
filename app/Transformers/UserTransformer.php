@@ -19,7 +19,7 @@ class UserTransformer extends TransformerAbstract
             'name' => $user->name,
             'username' => $user->username,
             'avatar' => $user->avatar(),
-            'accountType' => $user->accountType(),
+            'account_type' => $user->accountType(),
         ];
     }
 }
