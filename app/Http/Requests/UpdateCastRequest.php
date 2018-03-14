@@ -23,11 +23,21 @@ class UpdateCastRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'user_id' => 'integer|exists:users,id',
-            'game_id' => 'integer|exists:games,id',
-            'pie_value' => 'integer|exists:points,pie_value',
-            'multiplier' => 'integer|exists:multipliers,value'
-        ];
+        if (requestContainsMultipleObjects()) {
+            return [
+                '*.throws_id' => 'required|integer|exists:throws,id',
+                '*.user_id' => 'integer|exists:users,id',
+                '*.game_id' => 'integer|exists:games,id',
+                '*.pie_value' => 'integer|exists:points,pie_value',
+                '*.multiplier' => 'integer|exists:multipliers,value'
+            ];
+        } else {
+            return [
+                'user_id' => 'integer|exists:users,id',
+                'game_id' => 'integer|exists:games,id',
+                'pie_value' => 'integer|exists:points,pie_value',
+                'multiplier' => 'integer|exists:multipliers,value'
+            ];
+        }
     }
 }

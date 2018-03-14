@@ -153,6 +153,55 @@ class CastController extends Controller
     }
 
     /**
+     * Update multiple Casts in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateMultiple(UpdateCastRequest $request)
+    {
+        if (requestContainsMultipleObjects()) {
+            $casts = array();
+            DB::beginTransaction();
+
+            foreach ($request->all() as $data) {
+                try {
+                    $cast = Cast::find($data['throws_id']);
+                    $casts[] = $this->updateCast(
+                        $data['throws_id'],
+                        $data['user_id'] ?? $cast->user_id,
+                        $data['game_id'] ?? $cast->game_id,
+                        $data['pie_value'] ?? $cast->point()->pie_value,
+                        $data['multiplier'] ?? $cast->multiplier()->value
+                    );
+                } catch (NoSuchSectionExistsException $e) {
+                    DB::rollBack();
+                    return response([
+                        'errors' => [
+                            $e->getMessage()
+                        ]
+                    ], 422)->header('Content-Type', 'application/json');
+                }
+            }
+
+            DB::commit();
+            return fractal()
+                ->collection($casts)
+                ->transformWith(new CastTransformer)
+                ->parseExcludes('user')
+                ->parseExcludes('game')
+                ->toArray();
+        } else {
+            return response([
+                'errors' => [
+                    'Request need to contain multiple objects. To update single object use PATCH /throws/{id}. '
+                ]
+            ], 400)->header('Content-Type', 'application/json');
+        }
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
@@ -177,6 +226,42 @@ class CastController extends Controller
         $user = User::find($user_id);
         $game = Game::find($game_id);
         $multiplier = DB::table('multipliers')->where('value', $multiplier_value)->first();
+        $point = DB::table('points')
+            ->where('pie_value', $pie_value)
+            ->where('multiplier_id', $multiplier->id)
+            ->first();
+
+        if (!$point) {
+            throw new NoSuchSectionExistsException(
+                sprintf(
+                    "No such combination of multiplier (%d) and pie value (%d) exists.",
+                    $multiplier_value,
+                    $pie_value
+                )
+            );
+        }
+
+        $cast->user()->associate($user);
+        $cast->game()->associate($game);
+        $cast->point_id = $point->id;
+
+        $cast->save();
+
+        return $cast;
+    }
+
+    private function updateCast($throws_id, $user_id, $game_id, $pie_value, $multiplier_value)
+    {
+        $cast = Cast::find($throws_id);
+
+        if (!$cast) {
+            abort(\Illuminate\Http\Response::HTTP_NOT_FOUND);
+        }
+        $user = User::find($user_id);
+        $game = Game::find($game_id);
+        $multiplier = DB::table('multipliers')
+            ->where('value', $multiplier_value)
+            ->first();
         $point = DB::table('points')
             ->where('pie_value', $pie_value)
             ->where('multiplier_id', $multiplier->id)

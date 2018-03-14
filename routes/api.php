@@ -47,6 +47,8 @@ Route::prefix('v1')->group(function () {
     Route::prefix('throws')->group(function () {
         Route::get('/', 'API\CastController@index');
         Route::post('/', 'API\CastController@store');
+        /* TODO: updateMultiple() and update() is confusing */
+        Route::patch('/', 'API\CastController@updateMultiple');
         Route::get('/{id}', 'API\CastController@show');
         Route::patch('/{id}', 'API\CastController@update');
         Route::delete('/{id}', 'API\CastController@destroy');
