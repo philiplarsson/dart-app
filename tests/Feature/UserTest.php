@@ -20,14 +20,14 @@ class UserTest extends APITestCase
     {
         $user = factory(User::class)->create();
 
-        $response = $this->get('/api/v1/users');
+        $response = $this->get('/api/v1/users/' . $user->id);
 
         $response
             ->assertStatus(Response::HTTP_OK)
             ->assertJsonFragment([
-                'id'           => $user->id,
-                'name'         => $user->name,
-                'username'     => $user->username,
+                'id' => $user->id,
+                'name' => $user->name,
+                'username' => $user->username,
                 'account_type' => $user->accountType()
             ]);
     }
@@ -43,10 +43,39 @@ class UserTest extends APITestCase
         foreach ($users as $user) {
             $response->assertJsonFragment([
                 'id' => $user->id,
-                'name'         => $user->name,
-                'username'     => $user->username,
+                'name' => $user->name,
+                'username' => $user->username,
                 'account_type' => $user->accountType()
             ]);
         }
+    }
+
+    public function testCreateSingleUser()
+    {
+        $user = factory(User::class)->make();
+
+        $response = $this->json('POST', '/api/v1/users', [
+            "email" => $user->email,
+            "username" => $user->username,
+            "password" => $user->password,
+            "name" => $user->name
+        ]);
+
+        $response
+            ->assertStatus(Response::HTTP_OK)
+            ->assertJsonStructure([
+                'data' => [
+                    'id',
+                    'name',
+                    'username',
+                    'avatar',
+                    'account_type'
+                ]
+            ]);
+
+        $this->assertDatabaseHas('users', [
+            'name' => $user->name,
+            'email' => $user->email
+        ]);
     }
 }
