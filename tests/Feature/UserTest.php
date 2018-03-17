@@ -11,11 +11,6 @@ class UserTest extends APITestCase
 {
     use RefreshDatabase;
 
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
     public function testFetchSingleUser()
     {
         $user = factory(User::class)->create();
@@ -76,6 +71,18 @@ class UserTest extends APITestCase
         $this->assertDatabaseHas('users', [
             'name' => $user->name,
             'email' => $user->email
+        ]);
+    }
+
+    public function testDeleteUser()
+    {
+        $user = factory(User::class)->create();
+
+        $response = $this->delete('api/v1/users/' . $user->id);
+
+        $response->assertStatus(Response::HTTP_NO_CONTENT);
+        $this->assertDatabaseMissing('users', [
+            'id' => $user->id
         ]);
     }
 }
