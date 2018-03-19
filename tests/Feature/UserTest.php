@@ -74,6 +74,23 @@ class UserTest extends APITestCase
         ]);
     }
 
+    public function testUpdateUser()
+    {
+        $user = factory(User::class)->create();
+
+        $newName = "Pinocchio";
+        $response = $this->json('PATCH', '/api/v1/users/' . $user->id, [
+            "name" => $newName
+        ]);
+
+        $response->assertStatus(Response::HTTP_OK);
+
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'name' => $newName
+        ]);
+    }
+
     public function testDeleteUser()
     {
         $user = factory(User::class)->create();
