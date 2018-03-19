@@ -14,11 +14,7 @@ class TestingDatabaseSeeder extends Seeder
         $this->call([
             UserTypeSeeder::class,
             MultiplierSeeder::class,
-            PointSeeder::class,
-            // UserTableSeeder::class,
-            // GameTypeSeeder::class,
-            // GameSeeder::class,
-            // ThrowSeeder::class,
+            PointSeeder::class
         ]);
     }
 }
