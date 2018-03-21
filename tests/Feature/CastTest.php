@@ -61,4 +61,16 @@ class CastTest extends APITestCase
             "game_id" => $cast->game->id
         ]);
     }
+
+    public function testDeleteCast()
+    {
+        $cast = factory(Cast::class)->create();
+
+        $response = $this->delete('/api/v1/throws/' . $cast->id);
+
+        $response->assertStatus(Response::HTTP_NO_CONTENT);
+        $this->assertDatabaseMissing('throws', [
+           'id' => $cast->id
+        ]);
+    }
 }
