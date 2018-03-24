@@ -74,6 +74,43 @@ class UserTest extends APITestCase
         ]);
     }
 
+    public function testCreateMultipleUsers()
+    {
+        $users = factory(User::class, 3)->make();
+
+        $response = $this->json('POST', '/api/v1/users', [
+            [
+                "email" => $users[0]->email,
+                "username" => $users[0]->username,
+                "password" => $users[0]->password,
+                "name" => $users[0]->name
+            ],
+            [
+
+                "email" => $users[1]->email,
+                "username" => $users[1]->username,
+                "password" => $users[1]->password,
+                "name" => $users[1]->name
+            ],
+            [
+                "email" => $users[2]->email,
+                "username" => $users[2]->username,
+                "password" => $users[2]->password,
+                "name" => $users[2]->name
+            ]
+        ]);
+
+        $response->assertStatus(Response::HTTP_OK);
+
+        foreach ($users as $user) {
+            $this->assertDatabaseHas('users', [
+                'name' => $user->name,
+                'email' => $user->email,
+                'username' => $user->username
+            ]);
+        }
+    }
+
     public function testUpdateUser()
     {
         $user = factory(User::class)->create();

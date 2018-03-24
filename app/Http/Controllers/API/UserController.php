@@ -41,19 +41,37 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        $user = new User;
-        $user->username = $request->username;
-        $user->email = $request->email;
-        $user->password = bcrypt($request->password);
-        $user->name = $request->input('name', '');
-        $user->type_id = $this->getUserTypeId();
+        if (requestContainsMultipleObjects()) {
+            $users = array();
+            DB::beginTransaction();
 
-        $user->save();
+            foreach ($request->all() as $data) {
+                $users[] = $this->createUser(
+                    $data["name"],
+                    $data["username"],
+                    $data["email"],
+                    $data["password"]
+                );
+            }
+            DB::commit();
 
-        return fractal()
-            ->item($user)
-            ->transformWith(new UserTransformer)
-            ->toArray();
+            return fractal()
+                ->collection($users)
+                ->transformWith(new UserTransformer)
+                ->toArray();
+        } else {
+            $user = $this->createUser(
+                $request->input('name'),
+                $request->input('username'),
+                $request->input('email'),
+                $request->input('password')
+            );
+
+            return fractal()
+                ->item($user)
+                ->transformWith(new UserTransformer)
+                ->toArray();
+        }
     }
 
     private function getUserTypeId()
@@ -144,5 +162,19 @@ class UserController extends Controller
             ->parseExcludes('game')
             ->paginateWith(new IlluminatePaginatorAdapter($paginator))
             ->toArray();
+    }
+
+    private function createUser($name = '', $user_name, $email, $password)
+    {
+        $user = new User;
+        $user->username = $user_name;
+        $user->email = $email;
+        $user->password = bcrypt($password);
+        $user->name = $name;
+        $user->type_id = $this->getUserTypeId();
+
+        $user->save();
+
+        return $user;
     }
 }
