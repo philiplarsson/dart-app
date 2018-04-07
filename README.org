@@ -1,15 +1,16 @@
 * DartApp
 
-Site is up on https://secure-scrubland-72615.herokuapp.com/.
+Documentation is at: https://secure-scrubland-72615.herokuapp.com.
 
 Request example: https://secure-scrubland-72615.herokuapp.com/api/v1/games.
 
-Documentation is at: https://secure-scrubland-72615.herokuapp.com/documentation.
 
 ** Generate documentation
 
 ```
+
 dartapp/documentation $ aglio -i doc.apib -o ../public/documentation.html
+
 ```
 
 ** API
