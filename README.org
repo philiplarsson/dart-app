@@ -7,11 +7,12 @@ Request example: https://secure-scrubland-72615.herokuapp.com/api/v1/games.
 
 ** Generate documentation
 
-```
+#+BEGIN_SRC shell
 
 dartapp/documentation $ aglio -i doc.apib -o ../public/documentation.html
 
-```
+#+END_SRC
+
 
 ** API
 DartApp uses a RESTful API. The API is Work In Progress.
