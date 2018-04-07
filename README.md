@@ -6,13 +6,10 @@ Documentation is at: <https://secure-scrubland-72615.herokuapp.com>.
 Request example:
 <https://secure-scrubland-72615.herokuapp.com/api/v1/games>.
 
-Generate documentation
-----------------------
+## Generate documentation
 
 ``` {.shell}
-
 dartapp/documentation $ aglio -i doc.apib -o ../public/documentation.html
-
 ```
 
 API
@@ -33,266 +30,64 @@ When making requests, the following headers should be set:
 -   Accept: application/json
 -   Content-Type: application/json
 
-API description can be seen below, but is being replaced by a
-api-blueprint documentation.
+Available endpoints can be seen below. A api-blueprint is being worked on and
+can be seen in the documentation folder.
 
 ### Available Routes
 
-  Method   URI                        Name   Action                                                   Middleware
-  -------- -------------------------- ------ -------------------------------------------------------- ------------
-  GET      /                                 Closure                                                  web
-  GET      api/v1/games                      App\Http\Controllers\API\GameController@index            api
-  POST     api/v1/games                      App\Http\Controllers\API\GameController@store            api
-  GET      api/v1/games/{id}                 App\Http\Controllers\API\GameController@show             api
-  DELETE   api/v1/games/{id}                 App\Http\Controllers\API\GameController@destroy          api
-  PATCH    api/v1/games/{id}                 App\Http\Controllers\API\GameController@update           api
-  GET      api/v1/games/{id}/throws          App\Http\Controllers\API\GameController@throws           api
-  POST     api/v1/gametypes                  App\Http\Controllers\API\GameTypeController@store        api
-  GET      api/v1/gametypes                  App\Http\Controllers\API\GameTypeController@index        api
-  PATCH    api/v1/gametypes/{id}             App\Http\Controllers\API\GameTypeController@update       api
-  GET      api/v1/gametypes/{id}             App\Http\Controllers\API\GameTypeController@show         api
-  DELETE   api/v1/gametypes/{id}             App\Http\Controllers\API\GameTypeController@destroy      api
-  GET      api/v1/throws                     App\Http\Controllers\API\CastController@index            api
-  POST     api/v1/throws                     App\Http\Controllers\API\CastController@store            api
-  PATCH    api/v1/throws                     App\Http\Controllers\API\CastController@updateMultiple   api
-  GET      api/v1/throws/{id}                App\Http\Controllers\API\CastController@show             api
-  PATCH    api/v1/throws/{id}                App\Http\Controllers\API\CastController@update           api
-  DELETE   api/v1/throws/{id}                App\Http\Controllers\API\CastController@destroy          api
-  POST     api/v1/users                      App\Http\Controllers\API\UserController@store            api
-  GET      api/v1/users                      App\Http\Controllers\API\UserController@index            api
-  DELETE   api/v1/users/{id}                 App\Http\Controllers\API\UserController@destroy          api
-  PATCH    api/v1/users/{id}                 App\Http\Controllers\API\UserController@update           api
-  GET      api/v1/users/{id}                 App\Http\Controllers\API\UserController@show             api
-  GET      api/v1/users/{id}/throws          App\Http\Controllers\API\UserController@throws           api
+#### Games
 
-### API Description
+- GET      : api/v1/games                      
 
-1.  Throws
+- POST     : api/v1/games                      
 
-    1.  Create throws: POST api/v1/throws
+- GET      : api/v1/games/{id}                 
 
-        **Request** POST api/v1/throws with body:
+- DELETE   : api/v1/games/{id}                 
 
-        ``` {.javascript org-language="js"}
-        {
-          "user_id": "1",
-          "game_id": "20",
-          "pie_value": "1",
-          "multiplier": "1"
-        }
-        ```
+- PATCH    : api/v1/games/{id}                 
 
-        or to create multiple:
+- GET      : api/v1/games/{id}/throws          
 
-        ``` {.javascript org-language="js"}
-        [
-        {
-          "user_id": "1",
-          "game_id": "20",
-          "pie_value": "1",
-          "multiplier": "1"
-        },
-        {
-          "user_id": "1",
-          "game_id": "20",
-          "pie_value": "2",
-          "multiplier": "1"
-        },
-        {
-          "user_id": "1",
-          "game_id": "20",
-          "pie_value": "25",
-          "multiplier": "1"
-        },
-        {
-          "user_id": "3",
-          "game_id": "20",
-          "pie_value": "50",
-          "multiplier": "1"
-        }
-        ]
-        ```
+#### GameTypes
 
-        **Response example**:
+- POST     : api/v1/gametypes                  
 
-        ``` {.javascript org-language="js"}
-        {
-          "data": [
-            {
-              "id": 32,
-              "pie_value": 1,
-              "multiplier": 1,
-              "created_at": "2018-03-14 15:50:08",
-              "created_at_human": "1 second ago"
-            },
-            {
-              "id": 33,
-              "pie_value": 2,
-              "multiplier": 1,
-              "created_at": "2018-03-14 15:50:08",
-              "created_at_human": "1 second ago"
-            },
-            {
-              "id": 34,
-              "pie_value": 25,
-              "multiplier": 1,
-              "created_at": "2018-03-14 15:50:08",
-              "created_at_human": "1 second ago"
-            },
-            {
-              "id": 35,
-              "pie_value": 50,
-              "multiplier": 1,
-              "created_at": "2018-03-14 15:50:08",
-              "created_at_human": "1 second ago"
-            }
-          ]
-        }
-        ```
+- GET      : api/v1/gametypes                  
 
-    2.  Fetch throws: GET api/v1/throws
+- PATCH    : api/v1/gametypes/{id}             
 
-        **Request**: GET api/v1/throws
+- GET      : api/v1/gametypes/{id}             
 
-        **Response**:
+- DELETE   : api/v1/gametypes/{id}             
 
-        ``` {.javascript org-language="js"}
-         {
-          "data": [
-            {
-              "id": 1,
-              "pie_value": 3,
-              "multiplier": 2,
-              "created_at": "2018-03-14 15:46:43",
-              "created_at_human": "3 seconds ago",
-              "user": {
-                "data": {
-                  "id": 3,
-                  "name": "Mac Klein",
-                  "username": "ali.brakus",
-                  "avatar": "https:\/\/www.gravatar.com\/avatar\/cea373ce39b8332ce5db287c3aa27b5a?s=80&d=retro",
-                  "account_type": "admin"
-                }
-              },
-              "game": {
-                "data": {
-                  "id": 11,
-                  "created_at": "2018-03-14 15:46:43",
-                  "created_at_human": "3 seconds ago",
-                  "gametype": {
-                    "data": {
-                      "id": 1,
-                      "name": "20 to 15",
-                      "description": "Mollitia est voluptatem animi tempore."
-                    }
-                  }
-                }
-              }
-            },
-            {
-              "id": 17,
-              "pie_value": 10,
-              "multiplier": 3,
-              "created_at": "2018-03-14 15:46:43",
-              "created_at_human": "3 seconds ago",
-              "user": {
-                "data": {
-                  "id": 7,
-                  "name": "Jena Lueilwitz",
-                  "username": "vandervort.tyreek",
-                  "avatar": "https:\/\/www.gravatar.com\/avatar\/aec5784d02b0829772f35bdb452b4a95?s=80&d=retro",
-                  "account_type": "admin"
-                }
-              },
-              "game": {
-                "data": {
-                  "id": 4,
-                  "created_at": "2018-03-14 15:46:43",
-                  "created_at_human": "3 seconds ago",
-                  "gametype": {
-                    "data": {
-                      "id": 1,
-                      "name": "20 to 15",
-                      "description": "Mollitia est voluptatem animi tempore."
-                    }
-                  }
-                }
-              }
-            }
-         ],
-          "meta": {
-            "pagination": {
-              "total": 2,
-              "count": 2,
-              "per_page": 50,
-              "current_page": 1,
-              "total_pages": 1,
-              "links": []
-            }
-          }
-        }
+#### Throws
 
-        ```
+- GET      : api/v1/throws                     
 
-    3.  Update throws: PATCH api/v1/throws
+- POST     : api/v1/throws                     
 
-        To update a single throw:
+- PATCH    : api/v1/throws                     
 
-        **Request**: api/v1/throws/{id}
+- GET      : api/v1/throws/{id}                
 
-        with body
+- PATCH    : api/v1/throws/{id}                
 
-        ``` {.javascript org-language="js"}
-        {
-          "user_id": "3",
-          "game_id": "2",
-          "pie_value": "50",
-          "multiplier": "1"
-        }
-        ```
+- DELETE   : api/v1/throws/{id}                
 
-        To update multiple, use
+#### Users
 
-        **Request**: api/v1/throws
+- POST     : api/v1/users                      
 
-        with those properties you wish to update in the body.
-        `throws_id` is required.
+- GET      : api/v1/users                      
 
-        ``` {.javascript org-language="js"}
-        [
-        {
-            "throws_id": "149",
-            "user_id": 2
-        },
-        {
-            "throws_id": "148",
-          "user_id": "3"
-        }
-        ]
-        ```
+- DELETE   : api/v1/users/{id}                 
 
-        **Response example**:
+- PATCH    : api/v1/users/{id}                 
 
-        ``` {.javascript org-language="js"}
-        {
-          "data": [
-            {
-              "id": 149,
-              "pie_value": 1,
-              "multiplier": 1,
-              "created_at": "2018-03-14 14:54:26",
-              "created_at_human": "40 minutes ago"
-            },
-            {
-              "id": 148,
-              "pie_value": 1,
-              "multiplier": 1,
-              "created_at": "2018-03-14 14:54:26",
-              "created_at_human": "40 minutes ago"
-            }
-          ]
-        }
-        ```
+- GET      : api/v1/users/{id}                 
+
+- GET      : api/v1/users/{id}/throws          
 
 ### Sorting and Pagination
 
