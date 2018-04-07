@@ -22,6 +22,8 @@ Route::prefix('v1')->group(function () {
         Route::get('/', 'API\UserController@index');
         Route::post('/', 'API\UserController@store');
         Route::get('/{id}', 'API\UserController@show');
+        /* TODO: updateMultiple() and update() is confusing */
+        Route::patch('/', 'API\UserController@updateMultiple');
         Route::patch('/{id}', 'API\UserController@update');
         Route::delete('/{id}', 'API\UserController@destroy');
         Route::get('/{id}/throws', 'API\UserController@throws');

@@ -124,6 +124,45 @@ class UserController extends Controller
             ->transformWith(new UserTransformer)
             ->toArray();
     }
+    /**
+     * Update multiple Throws in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateMultiple(UpdateUserRequest $request)
+    {
+        if (requestContainsMultipleObjects()) {
+            $users = array();
+            DB::beginTransaction();
+
+            foreach ($request->all() as $data) {
+                $user = User::find($data['id']);
+                $user->name = $data['name'] ?? $user->name;
+                $user->username = $data['username'] ?? $user->username;
+                $user->email = $data['email'] ?? $user->email;
+
+                $user->save();
+
+                $users[] = $user;
+            }
+
+            DB::commit();
+
+            return fractal()
+                ->collection($users)
+                ->transformWith(new UserTransformer)
+                ->toArray();
+
+        } else {
+            return response([
+                    'errors' => [
+                        'Request need to contain multiple objects. To update single object use PATCH /users/{id}. '
+                    ]
+            ], 400)->header('Content-Type', 'application/json');
+        }
+    }
 
     /**
      * Remove the specified resource from storage.

@@ -128,6 +128,37 @@ class UserTest extends APITestCase
         ]);
     }
 
+    public function testUpdateMultipleUsers()
+    {
+        $users = factory(User::class, 5)->create();
+
+        $newName = "Pinocchio";
+        $newEmail = "alice@example.com";
+
+        $response = $this->json('PATCH', '/api/v1/users', [
+                [
+                'id' => $users[0]->id,
+                'name' => $newName
+                ],
+                [
+                'id' => $users[1]->id,
+                'email' => $newEmail
+                ]
+        ]);
+
+        $response->assertStatus(Response::HTTP_OK);
+
+        $this->assertDatabaseHas('users', [
+            'id' => $users[0]->id,
+            'name' => $newName
+        ]);
+
+        $this->assertDatabaseHas('users', [
+            'id' => $users[1]->id,
+            'email' => $newEmail
+        ]);
+    }
+
     public function testDeleteUser()
     {
         $user = factory(User::class)->create();

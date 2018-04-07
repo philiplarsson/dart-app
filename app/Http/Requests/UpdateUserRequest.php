@@ -23,10 +23,20 @@ class UpdateUserRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'username' => 'max:30|unique:users',
-            'email' => 'email|max:255|unique:users',
-            'name' => 'string:max:255',
-        ];
+        if (requestContainsMultipleObjects()) {
+            return [
+                '*.id' => 'required|integer|exists:users,id',
+                '*.username' => 'max:30|unique:users',
+                '*.email' => 'email|max:255|unique:users',
+                '*.name' => 'string:max:255'
+            ];
+        } else {
+            return [
+                'username' => 'max:30|unique:users',
+                'email' => 'email|max:255|unique:users',
+                'name' => 'string:max:255',
+            ];
+        }
+
     }
 }
