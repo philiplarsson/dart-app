@@ -1,0 +1,340 @@
+FORMAT: 1A
+
+# Dart-App
+
+DartApp API is a a RESTful API.
+
+There are four main endpoints:
+
+- **Throw**: This is a throw made. A throw is related to a game (which the throw
+  belongs to) and a user (who throw the dart).
+- **GameType**: Different gametypes such as "20 to 15" or "201".
+- **Game**: A single match. A game has a gametype.
+- **User**: A person who participates in a game and throw darts.
+
+When making requests, the following headers should be set:
+- Accept: application/json
+- Content-Type: application/json
+
+## Sorting and Pagination
+For some routes the order can be sorted in reverse order by using a query parameter:
+
+### Sorting
+- GET ´http://localhost:8000/api/v1/throws?sort_by=asc´
+- GET ´http://localhost:8000/api/v1/games?sort_by=asc´
+
+### Pagination
+Pagination is used for enpoints where the data is large.
+Add query parameter page like so:
+
+- GET ´http://localhost:8000/api/v1/throws?page=2´
+
+# Group Throws
+
+Resources related to throws in the API.
+
+## Throw [/throws/{throw_id}]
+
++ Parameters
+    + throw_id: 1 (required, number) - Id of the Question in form of an integer
+
+### View a Single Throw [GET]
+
+Fetch the details of a single throw using this action.
+
++ Response 200 (application/json)
+
+        {
+            "data": {
+                "id": 1,
+                "pie_value": 3,
+                "multiplier": 2,
+                "created_at": "2018-03-14 15:46:43",
+                "created_at_human": "3 weeks ago",
+                "user": {
+                    "data": {
+                        "id": 3,
+                        "name": "Mac the not so klein",
+                        "username": "mcklein",
+                        "avatar": "https:\/\/www.gravatar.com\/avatar\/cea373ce39b8332ce5db287c3aa27b5a?s=80&d=retro",
+                        "account_type": "admin"
+                    }
+                },
+                "game": {
+                    "data": {
+                        "id": 11,
+                        "created_at": "2018-03-14 15:46:43",
+                        "created_at_human": "3 weeks ago",
+                        "gametype": {
+                            "data": {
+                                "id": 1,
+                                "name": "20 to 15",
+                                "description": "Mollitia est voluptatem animi tempore."
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+### Update a Single Throw [PATCH]
+
+Update a single throw using this action. It takes a JSON object containing the details of a throw.
+
++ user_id (int) - Id of the user who made the throw
++ game_id (int) - Id of the game this throw was made in
++ pie_value (int) - Value the dart landed at.
++ multiplier (int) - Multiplier the dart landed at.
+
++ Request (application/json)
+
+            {
+                "user_id": "3",
+                "game_id": "2",
+                "pie_value": "50",
+                "multiplier": "1"
+            }
+
++ Response 200 (application/json)
+
+        {
+            "data": {
+                "id": 11,
+                "pie_value": 50,
+                "multiplier": 1,
+                "created_at": "2018-03-14 15:46:43",
+                "created_at_human": "5 minutes ago",
+                "user": {
+                    "data": {
+                        "id": 3,
+                        "name": "Mac Klein",
+                        "username": "ali.brakus",
+                        "avatar": "https:\/\/www.gravatar.com\/avatar\/cea373ce39b8332ce5db287c3aa27b5a?s=80&d=retro",
+                        "account_type": "admin"
+                    }
+                },
+                "game": {
+                    "data": {
+                        "id": 2,
+                        "created_at": "2018-03-14 15:46:43",
+                        "created_at_human": "5 minutes ago",
+                        "gametype": {
+                            "data": {
+                                "id": 2,
+                                "name": "201",
+                                "description": "Repellendus aliquam animi tenetur qui et quam."
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+### Delete Throw [DELETE]
+
++ Response 204
+
+## Throws Collection [/throws]
+
+### List All Throws [GET]
+List all throws using this action.
+
++ Response 200 (application/json)
+
+        {
+            "data": [{
+                "id": 39,
+                "pie_value": 1,
+                "multiplier": 1,
+                "created_at": "2018-04-07 19:10:24",
+                "created_at_human": "7 seconds ago",
+                "user": {
+                    "data": {
+                        "id": 1,
+                        "name": "Isac Hammes The Second",
+                        "username": "isaac",
+                        "avatar": "https:\/\/www.gravatar.com\/avatar\/0d1e761d0882962f66ab3abb44130f80?s=80&d=retro",
+                        "account_type": "user"
+                    }
+                },
+                "game": {
+                    "data": {
+                        "id": 20,
+                        "created_at": "2018-03-14 15:46:43",
+                        "created_at_human": "3 weeks ago",
+                        "gametype": {
+                            "data": {
+                                "id": 1,
+                                "name": "20 to 15",
+                                "description": "Mollitia est voluptatem animi tempore."
+                            }
+                        }
+                    }
+                }
+            }, {
+                "id": 1,
+                "pie_value": 3,
+                "multiplier": 2,
+                "created_at": "2018-03-14 15:46:43",
+                "created_at_human": "3 weeks ago",
+                "user": {
+                    "data": {
+                        "id": 3,
+                        "name": "Mac the not so klein",
+                        "username": "mcklein",
+                        "avatar": "https:\/\/www.gravatar.com\/avatar\/cea373ce39b8332ce5db287c3aa27b5a?s=80&d=retro",
+                        "account_type": "admin"
+                    }
+                },
+                "game": {
+                    "data": {
+                        "id": 11,
+                        "created_at": "2018-03-14 15:46:43",
+                        "created_at_human": "3 weeks ago",
+                        "gametype": {
+                            "data": {
+                                "id": 1,
+                                "name": "20 to 15",
+                                "description": "Mollitia est voluptatem animi tempore."
+                            }
+                        }
+                    }
+                }
+            }]
+        }
+
+### Create a New Throw [POST]
+
+You can create new throws using this action.
+Note that if the user threw a value of 60, the pie_value should be 20 and the multiplier should be 3.
+Moreover, bullseye is represented as 50 with a multiplier of 1.
+
+
++ user_id (int) - Id of the user who made the throw
++ game_id (int) - Id of the game this throw was made in
++ pie_value (int) - Value the dart landed at.
++ multiplier (int) - Multiplier the dart landed at.
+
++ Request Create Single Throw (application/json)
+
+            {
+                "user_id": "1",
+                "game_id": "20",
+                "pie_value": "1",
+                "multiplier": "1"
+            }
+
++ Response 200 (application/json)
+
+        {
+            "data": {
+                "id": 39,
+                "pie_value": 1,
+                "multiplier": 1,
+                "created_at": "2018-04-07 19:10:24",
+                "created_at_human": "1 second ago"
+            }
+        }
+
++ Request Create Multiple Throws (application/json)
+
+            [
+                {
+                    "user_id": "1",
+                    "game_id": "20",
+                    "pie_value": "1",
+                    "multiplier": "1"
+                },
+                {
+                    "user_id": "1",
+                    "game_id": "20",
+                    "pie_value": "2",
+                    "multiplier": "1"
+                },
+                {
+                    "user_id": "1",
+                    "game_id": "20",
+                    "pie_value": "25",
+                    "multiplier": "1"
+                },
+                {
+                    "user_id": "3",
+                    "game_id": "20",
+                    "pie_value": "50",
+                    "multiplier": "1"
+                }
+            ]
+
++ Response 200 (application/json)
+
+        {
+            "data": [{
+                "id": 32,
+                "pie_value": 1,
+                "multiplier": 1,
+                "created_at": "2018-03-14 15:50:08",
+                "created_at_human": "1 second ago"
+            }, {
+                "id": 33,
+                "pie_value": 2,
+                "multiplier": 1,
+                "created_at": "2018-03-14 15:50:08",
+                "created_at_human": "1 second ago"
+            }, {
+                "id": 34,
+                "pie_value": 25,
+                "multiplier": 1,
+                "created_at": "2018-03-14 15:50:08",
+                "created_at_human": "1 second ago"
+            }, {
+                "id": 35,
+                "pie_value": 50,
+                "multiplier": 1,
+                "created_at": "2018-03-14 15:50:08",
+                "created_at_human": "1 second ago"
+            }]
+        }
+
+### Update Multiple Throws [PATCH]
+
+You can update multiple throws using this action.
+Note that if the user threw a value of 60, the pie_value should be 20 and the multiplier should be 3.
+Moreover, bullseye is represented as 50 with a multiplier of 1.
+
+
++ user_id (int) - Id of the user who made the throw
++ game_id (int) - Id of the game this throw was made in
++ pie_value (int) - Value the dart landed at.
++ multiplier (int) - Multiplier the dart landed at.
+
++ Request (application/json)
+
+            [
+                {
+                    "throws_id": "11",
+                    "user_id": 2
+                },
+                {
+                    "throws_id": "21",
+                    "user_id": "3"
+                }
+            ]
+
++ Response 200 (application/json)
+
+            {
+                "data": [{
+                    "id": 11,
+                    "pie_value": 50,
+                    "multiplier": 1,
+                    "created_at": "2018-03-14 15:46:43",
+                    "created_at_human": "3 weeks ago"
+                }, {
+                    "id": 21,
+                    "pie_value": 9,
+                    "multiplier": 2,
+                    "created_at": "2018-03-14 15:46:43",
+                    "created_at_human": "3 weeks ago"
+                }]
+            }
+

@@ -12,5 +12,6 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return \File::get(public_path() . '/documentation.html');
 });
+

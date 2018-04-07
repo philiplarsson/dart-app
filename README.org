@@ -4,6 +4,14 @@ Site is up on https://secure-scrubland-72615.herokuapp.com/.
 
 Request example: https://secure-scrubland-72615.herokuapp.com/api/v1/games.
 
+Documentation is at: https://secure-scrubland-72615.herokuapp.com/documentation.
+
+** Generate documentation
+
+```
+dartapp/documentation $ aglio -i doc.apib -o ../public/documentation.html
+```
+
 ** API
 DartApp uses a RESTful API. The API is Work In Progress.
 
@@ -19,8 +27,7 @@ When making requests, the following headers should be set:
 - Accept: application/json
 - Content-Type: application/json
 
-API description can be seen below. A not-so-good automatically exported
-description can be seen in [[api.md]].
+API description can be seen below, but is being replaced by a api-blueprint documentation.
 
 *** Available Routes
 | Method | URI                      | Name | Action                                                 | Middleware |
