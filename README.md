@@ -1,3 +1,9 @@
+-   [DartApp](#dartapp)
+    -   [Generate documentation](#generate-documentation)
+    -   [API](#api)
+        -   [Available Routes](#available-routes)
+        -   [Sorting and Pagination](#sorting-and-pagination)
+
 DartApp
 =======
 
@@ -6,7 +12,8 @@ Documentation is at: <https://secure-scrubland-72615.herokuapp.com>.
 Request example:
 <https://secure-scrubland-72615.herokuapp.com/api/v1/games>.
 
-## Generate documentation
+Generate documentation
+----------------------
 
 ``` {.shell}
 dartapp/documentation $ aglio -i doc.apib -o ../public/documentation.html
@@ -30,64 +37,64 @@ When making requests, the following headers should be set:
 -   Accept: application/json
 -   Content-Type: application/json
 
-Available endpoints can be seen below. A api-blueprint is being worked on and
-can be seen in the documentation folder.
+Available endpoints can be seen below. A api-blueprint is being worked
+on and can be seen in the documentation folder.
 
 ### Available Routes
 
 #### Games
 
-- GET      : api/v1/games                      
+-   GET : api/v1/games
 
-- POST     : api/v1/games                      
+-   POST : api/v1/games
 
-- GET      : api/v1/games/{id}                 
+-   GET : api/v1/games/{id}
 
-- DELETE   : api/v1/games/{id}                 
+-   DELETE : api/v1/games/{id}
 
-- PATCH    : api/v1/games/{id}                 
+-   PATCH : api/v1/games/{id}
 
-- GET      : api/v1/games/{id}/throws          
+-   GET : api/v1/games/{id}/throws
 
 #### GameTypes
 
-- POST     : api/v1/gametypes                  
+-   POST : api/v1/gametypes
 
-- GET      : api/v1/gametypes                  
+-   GET : api/v1/gametypes
 
-- PATCH    : api/v1/gametypes/{id}             
+-   PATCH : api/v1/gametypes/{id}
 
-- GET      : api/v1/gametypes/{id}             
+-   GET : api/v1/gametypes/{id}
 
-- DELETE   : api/v1/gametypes/{id}             
+-   DELETE : api/v1/gametypes/{id}
 
 #### Throws
 
-- GET      : api/v1/throws                     
+-   GET : api/v1/throws
 
-- POST     : api/v1/throws                     
+-   POST : api/v1/throws
 
-- PATCH    : api/v1/throws                     
+-   PATCH : api/v1/throws
 
-- GET      : api/v1/throws/{id}                
+-   GET : api/v1/throws/{id}
 
-- PATCH    : api/v1/throws/{id}                
+-   PATCH : api/v1/throws/{id}
 
-- DELETE   : api/v1/throws/{id}                
+-   DELETE : api/v1/throws/{id}
 
 #### Users
 
-- POST     : api/v1/users                      
+-   POST : api/v1/users
 
-- GET      : api/v1/users                      
+-   GET : api/v1/users
 
-- DELETE   : api/v1/users/{id}                 
+-   DELETE : api/v1/users/{id}
 
-- PATCH    : api/v1/users/{id}                 
+-   PATCH : api/v1/users/{id}
 
-- GET      : api/v1/users/{id}                 
+-   GET : api/v1/users/{id}
 
-- GET      : api/v1/users/{id}/throws          
+-   GET : api/v1/users/{id}/throws
 
 ### Sorting and Pagination
 
