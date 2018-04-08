@@ -57,9 +57,8 @@ class CastTest extends APITestCase
         ]);
 
         $this->assertDatabaseHas('throws', [
-            "id" => $cast->id,
             "user_id" => $cast->user->id,
-            "game_id" => $cast->game->id
+            "game_id" => $cast->game->id,
         ]);
     }
 
