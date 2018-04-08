@@ -27,7 +27,7 @@ DartApp uses a RESTful API. The API is Work In Progress.
 DartApp uses 4 main endpoints.
 
 -   **Cast**: This is a throw made. A cast is related to a game (which
-    the throw belongs to) and a user (who throw the dart).
+    the throw belongs to) and a user (who threw the dart).
 -   **GameType**: Different gametypes such as \"20 to 15\" or \"201\".
 -   **Game**: A single match. A game has a gametype.
 -   **User**: A person who participates in a game and throw darts.
