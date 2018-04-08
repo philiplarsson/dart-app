@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\GameType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Transformers\GameTypeTransformer;
 use App\Http\Requests\UpdateGameTypeRequest;
@@ -33,16 +34,39 @@ class GameTypeController extends Controller
      */
     public function store(StoreGameTypeRequest $request)
     {
-        $gameType = new GameType;
-        $gameType->name = $request->name;
-        $gameType->description = $request->description;
+        if (requestContainsMultipleObjects()) {
+           $gameTypes = array();
 
-        $gameType->save();
+           DB::beginTransaction();
 
-        return fractal()
-            ->item($gameType)
-            ->transformWith(new GameTypeTransformer)
-            ->toArray();
+           foreach ($request->all() as $data) {
+               $gameType = new GameType;
+               $gameType->name = $data['name'];
+               $gameType->description = $data['description'];
+
+               $gameType->save();
+
+               $gameTypes[] = $gameType;
+           }
+           DB::commit();
+
+           return fractal()
+                ->collection($gameTypes)
+                ->transformWith(new GameTypeTransformer)
+                ->toArray();
+        } else {
+            $gameType = new GameType;
+            $gameType->name = $request->name;
+            $gameType->description = $request->description;
+
+            $gameType->save();
+
+            return fractal()
+                ->item($gameType)
+                ->transformWith(new GameTypeTransformer)
+                ->toArray();
+
+        }
     }
 
     /**

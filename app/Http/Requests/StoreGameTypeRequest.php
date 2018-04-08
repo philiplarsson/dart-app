@@ -23,9 +23,16 @@ class StoreGameTypeRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'name' => 'required|max:50|unique:game_types',
-            'description' => 'required|max:1024',
-        ];
+        if (requestContainsMultipleObjects()) {
+            return [
+                '*.name' => 'required|max:50|unique:game_types',
+                '*.description' => 'required|max:1024',
+            ];
+        } else {
+            return [
+                'name' => 'required|max:50|unique:game_types',
+                'description' => 'required|max:1024',
+            ];
+        }
     }
 }
