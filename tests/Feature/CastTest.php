@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Cast;
 use App\Game;
+use App\User;
 use Illuminate\Http\Response;
 use Tests\APITestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -87,6 +88,55 @@ class CastTest extends APITestCase
             "id" => $cast->id,
             "user_id" => $cast->user->id,
             "game_id" => $game->id
+        ]);
+    }
+
+    public function testUpdateMultipleCasts()
+    {
+        $casts = factory(Cast::class, 2)->create();
+        $user = factory(User::class)->create();
+
+        $response = $this->json('PATCH', '/api/v1/throws', [
+                [
+                    'id' => $casts[0]->id,
+                    'user_id' => $user->id
+                ],
+                [
+                    'id' => $casts[1]->id,
+                    'user_id' => $user->id
+                ]
+        ]);
+
+        $response->assertStatus(Response::HTTP_OK)
+            ->assertJsonStructure([
+                    "data" => [
+                    [
+                        "id",
+                        "pie_value",
+                        "multiplier",
+                        "created_at",
+                        "created_at_human",
+                    ],
+                    [
+                        "id",
+                        "pie_value",
+                        "multiplier",
+                        "created_at",
+                        "created_at_human",
+                    ]
+                    ]
+            ]
+            );
+
+
+        $this->assertDatabaseHas('throws', [
+            'id' => $casts[0]->id,
+            'user_id' => $user->id
+        ]);
+
+        $this->assertDatabaseHas('throws', [
+            'id' => $casts[1]->id,
+            'user_id' => $user->id
         ]);
     }
 

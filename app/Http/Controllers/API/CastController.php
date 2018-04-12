@@ -167,9 +167,9 @@ class CastController extends Controller
 
             foreach ($request->all() as $data) {
                 try {
-                    $cast = Cast::find($data['throws_id']);
+                    $cast = Cast::find($data['id']);
                     $casts[] = $this->updateCast(
-                        $data['throws_id'],
+                        $data['id'],
                         $data['user_id'] ?? $cast->user_id,
                         $data['game_id'] ?? $cast->game_id,
                         $data['pie_value'] ?? $cast->point()->pie_value,

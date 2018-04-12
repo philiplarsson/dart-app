@@ -81,10 +81,10 @@ Fetch the details of a single throw using this action.
 
 Update a single throw using this action. It takes a JSON object containing the details of a throw.
 
-+ user_id (int) - Id of the user who made the throw
-+ game_id (int) - Id of the game this throw was made in
-+ pie_value (int) - Value the dart landed at.
-+ multiplier (int) - Multiplier the dart landed at.
++ user_id (number) - Id of the user who made the throw
++ game_id (number) - Id of the game this throw was made in
++ pie_value (number) - Value the dart landed at.
++ multiplier (number) - Multiplier the dart landed at.
 
 + Request (application/json)
 
@@ -210,10 +210,10 @@ Note that if the user threw a value of 60, the pie_value should be 20 and the mu
 Moreover, bullseye is represented as 50 with a multiplier of 1.
 
 
-+ user_id (int) - Id of the user who made the throw
-+ game_id (int) - Id of the game this throw was made in
-+ pie_value (int) - Value the dart landed at.
-+ multiplier (int) - Multiplier the dart landed at.
++ user_id (number) - Id of the user who made the throw
++ game_id (number) - Id of the game this throw was made in
++ pie_value (number) - Value the dart landed at.
++ multiplier (number) - Multiplier the dart landed at.
 
 + Request Create Single Throw (application/json)
 
@@ -271,20 +271,21 @@ Note that if the user threw a value of 60, the pie_value should be 20 and the mu
 Moreover, bullseye is represented as 50 with a multiplier of 1.
 
 
-+ user_id (int) - Id of the user who made the throw
-+ game_id (int) - Id of the game this throw was made in
-+ pie_value (int) - Value the dart landed at.
-+ multiplier (int) - Multiplier the dart landed at.
++ id (number) - Id of the throw that should be updated.
++ user_id (number) - Id of the user who made the throw.
++ game_id (number) - Id of the game this throw was made in.
++ pie_value (number) - Value the dart landed at.
++ multiplier (number) - Multiplier the dart landed at.
 
 + Request (application/json)
 
             [
                 {
-                    "throws_id": "11",
+                    "id": "11",
                     "user_id": 2
                 },
                 {
-                    "throws_id": "21",
+                    "id": "21",
                     "user_id": "3"
                 }
             ]

@@ -25,7 +25,7 @@ class UpdateCastRequest extends FormRequest
     {
         if (requestContainsMultipleObjects()) {
             return [
-                '*.throws_id' => 'required|integer|exists:throws,id',
+                '*.id' => 'required|integer|exists:throws,id',
                 '*.user_id' => 'integer|exists:users,id',
                 '*.game_id' => 'integer|exists:games,id',
                 '*.pie_value' => 'integer|exists:points,pie_value',
