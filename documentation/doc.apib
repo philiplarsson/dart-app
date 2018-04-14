@@ -226,7 +226,6 @@ Moreover, bullseye is represented as 50 with a multiplier of 1.
 
 + Response 200 (application/json)
 
-
     + Attributes
         - data (Throw)
 
@@ -330,6 +329,33 @@ Update a single game type using this action. It takes a JSON object containing t
 + Response 204
 
 ## GameTypes Collection [/gametypes]
+
+### List All GameTypes [GET]
+List all gametypes using this action.
+
++ Response 200 (application/json)
+    + Attributes
+        - data (array[GameType Full])
+
+### Create a New GameType [POST]
+Create new gametypes using this action.
+
++ description (string) - Description of the gametype.
++ name (string) - Name of the gametype.
+
++ Request Create Single GameType (application/json)
+    + Attributes (GameType NoId)
+
++ Response 200 (application/json)
+    + Attributes
+        - data (GameType Full)
+
++ Request Create Multiple GameTypes (application/json)
+    + Attributes (array[GameType NoId])
+
++ Response 200 (application/json)
+    + Attributes
+        - data (array[GameType Full])
 
 # Data Structures
 
