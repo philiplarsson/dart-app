@@ -357,7 +357,20 @@ Create new gametypes using this action.
         - data (array[GameType Full])
 
 ### Update Multiple GameTypes [PATCH]
-TODO: Not Implemented YET
+TODO: Not Implemented yet!
+
+You can update multiple gametypes using this action.
+
++ id (number, required) - Id of the gametype that should be updated.
++ description (string) - Description of the gametype.
++ name (string) - Name of the gametype.
+
++ Request  (application/json)
+    + Attributes (array[GameType Full])
+
++ Response 200 (application/json)
+    + Attributes
+        - data (array[GameType Full])
 
 # Data Structures
 
