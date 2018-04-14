@@ -87,13 +87,7 @@ Update a single throw using this action. It takes a JSON object containing the d
 + multiplier (number) - Multiplier the dart landed at.
 
 + Request (application/json)
-
-            {
-                "user_id": "3",
-                "game_id": "2",
-                "pie_value": "50",
-                "multiplier": "1"
-            }
+    + Attributes (Throw NoFluff)
 
 + Response 200 (application/json)
 
@@ -215,52 +209,20 @@ Moreover, bullseye is represented as 50 with a multiplier of 1.
 + multiplier (number) - Multiplier the dart landed at.
 
 + Request Create Single Throw (application/json)
-
-            {
-                "user_id": "1",
-                "game_id": "20",
-                "pie_value": "1",
-                "multiplier": "1"
-            }
+    + Attributes (Throw NoFluff)
 
 + Response 200 (application/json)
 
     + Attributes
-        - data (Throw)
+        - data (Throw Full)
 
 + Request Create Multiple Throws (application/json)
-
-            [
-                {
-                    "user_id": "1",
-                    "game_id": "20",
-                    "pie_value": "1",
-                    "multiplier": "1"
-                },
-                {
-                    "user_id": "1",
-                    "game_id": "20",
-                    "pie_value": "2",
-                    "multiplier": "1"
-                },
-                {
-                    "user_id": "1",
-                    "game_id": "20",
-                    "pie_value": "25",
-                    "multiplier": "1"
-                },
-                {
-                    "user_id": "3",
-                    "game_id": "20",
-                    "pie_value": "50",
-                    "multiplier": "1"
-                }
-            ]
+    + Attributes (array[Throw NoFluff])
 
 + Response 200 (application/json)
 
     + Attributes
-        - data (array[Throw])
+        - data (array[Throw Full])
 
 ### Update Multiple Throws [PATCH]
 
@@ -269,28 +231,18 @@ Note that if the user threw a value of 60, the pie_value should be 20 and the mu
 Moreover, bullseye is represented as 50 with a multiplier of 1.
 
 
-+ id (number) - Id of the throw that should be updated.
++ id (number, required) - Id of the throw that should be updated.
 + user_id (number) - Id of the user who made the throw.
 + game_id (number) - Id of the game this throw was made in.
 + pie_value (number) - Value the dart landed at.
 + multiplier (number) - Multiplier the dart landed at.
 
 + Request (application/json)
-
-            [
-                {
-                    "id": "11",
-                    "user_id": 2
-                },
-                {
-                    "id": "21",
-                    "user_id": "3"
-                }
-            ]
+    + Attributes (array[Throw NoFluff])
 
 + Response 200 (application/json)
     + Attributes
-        - data (array[Throw])
+        - data (array[Throw Full])
 
 # Group GameTypes
 
@@ -374,13 +326,17 @@ You can update multiple gametypes using this action.
 
 # Data Structures
 
-## Throw (object)
-
+## Throw Full (object)
 - id: `21` (number) - The unique ID of the throw.
-- pie_value: `9` (number) - The pie value of the throw.
-- multiplier: `2` (number) - The multiplier of the throw.
 - created_at: `2018-03-14 15:46:43` (string) - Date and time when the throw was created.
 - created_at_human: `3 weeks ago` (string) - Date and time when the throw was created in human friendly format.
+- Include Throw NoFluff
+
+## Throw NoFluff (object)
+- user_id: `3` (number) - The id of the user who made the throw.
+- game_id: `2` (number) - The id of the game this throw was made in.
+- pie_value: `50` (number) - The pie value of the throw.
+- multiplier: `1` (number) - The multiplier of the throw.
 
 ## GameType Full (object)
 - id: `21` (number) - The unique ID of the gametype.
