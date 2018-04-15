@@ -115,6 +115,37 @@ class GameTypeController extends Controller
             ->toArray();
     }
 
+    public function updateMultiple(UpdateGameTypeRequest $request)
+    {
+        if (requestContainsMultipleObjects()) {
+            $gameTypes = array();
+            DB::beginTransaction();
+
+            foreach ($request->all() as $data) {
+                $gameType = GameType::find($data['id']);
+                $gameType->name = $data['name'] ?? $gameType->name;
+                $gameType->description = $data['description'] ?? $gameType->description;
+
+                $gameType->save();
+
+                $gameTypes[] = $gameType;
+            }
+
+            DB::commit();
+
+            return fractal()
+                ->collection($gameTypes)
+                ->transformWith(new GameTypeTransformer)
+                ->toArray();
+        } else {
+            return response([
+                    'errors' => [
+                        'Request need to contain multiple objects. To update single gametype use PATCH /gametype/{id}. '
+                    ]
+            ], 400)->header('Content-Type', 'application/json');
+        }
+    }
+
     /**
      * Remove the specified resource from storage.
      *

@@ -93,4 +93,57 @@ class GameTypeTest extends APITestCase
             'description' => $newDescription
         ]);
     }
+
+    public function testUpdateMultipleGameTypes()
+    {
+        $gameTypes = factory(GameType::class, 2)->create();
+
+        $newNames[] = $this->fake->name;
+        $newNames[] = $this->fake->name;
+
+        $newDescriptions[] = $this->fake->sentence;
+        $newDescriptions[] = $this->fake->sentence;
+
+        $response = $this->json('PATCH', '/api/v1/gametypes', [
+                [
+                    "id"          => $gameTypes[0]->id,
+                    "name"        => $newNames[0],
+                    "description" => $newDescriptions[0]
+                ],
+                [
+                    "id"          => $gameTypes[1]->id,
+                    "name"        => $newNames[1],
+                    "description" => $newDescriptions[1]
+                ]
+        ]);
+
+        $response
+            ->assertStatus(Response::HTTP_OK)
+            ->assertJsonStructure([
+                "data" => [
+                    [
+                        "id",
+                        "name",
+                        "description",
+                    ],
+                    [
+                        "id",
+                        "name",
+                        "description",
+                    ]
+            ]
+        ]);
+
+        $this->assertDatabaseHas('game_types', [
+            'id'          => $gameTypes[0]->id,
+            'name'        => $newNames[0],
+            'description' => $newDescriptions[0]
+        ]);
+
+        $this->assertDatabaseHas('game_types', [
+            'id'          => $gameTypes[1]->id,
+            'name'        => $newNames[1],
+            'description' => $newDescriptions[1]
+        ]);
+    }
 }

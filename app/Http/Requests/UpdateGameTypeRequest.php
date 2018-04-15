@@ -23,9 +23,19 @@ class UpdateGameTypeRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'name' => 'max:50|unique:game_types',
-            'description' => 'string:max:1024',
-        ];
+        if (requestContainsMultipleObjects()) {
+            return [
+                '*.id' => 'required|exists:game_types,id',
+                '*.name' => 'max:50|unique:game_types',
+                '*.description' => 'string:max:1024',
+            ];
+        } else {
+            return [
+                'name' => 'max:50|unique:game_types',
+                'description' => 'string:max:1024',
+            ];
+
+        }
+
     }
 }
