@@ -64,4 +64,33 @@ class GameTypeTest extends APITestCase
                 "description" => $gameTypes[1]->description
         ]);
     }
+
+    public function testUpdateSingleGameType()
+    {
+        $gameType = factory(GameType::class)->create();
+
+        $newName = $this->fake->name;
+        $newDescription = $this->fake->sentence;
+
+        $response = $this->json('PATCH', '/api/v1/gametypes/' . $gameType->id, [
+                "name"        => $newName,
+                "description" => $newDescription
+        ]);
+
+        $response
+            ->assertStatus(Response::HTTP_OK)
+            ->assertJsonStructure([
+                "data" => [
+                    "id",
+                    "name",
+                    "description",
+            ]
+        ]);
+
+        $this->assertDatabaseHas('game_types', [
+            'id'          => $gameType->id,
+            'name'        => $newName,
+            'description' => $newDescription
+        ]);
+    }
 }
