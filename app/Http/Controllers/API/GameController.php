@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Game;
 use App\GameType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Transformers\GameTransformer;
 use App\Transformers\CastTransformer;
@@ -101,6 +102,42 @@ class GameController extends Controller
             ->item($game)
             ->transformWith(new GameTransformer)
             ->toArray();
+    }
+
+    /**
+     * Update multiple games in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function updateMultiple(UpdateGameRequest $request)
+    {
+        if (requestContainsMultipleObjects()) {
+            $games = array();
+            DB::beginTransaction();
+
+            foreach ($request->all() as $data) {
+                $game = Game::find($data['id']);
+                $gameType = GameType::find($data['game_type_id']);
+                $game->gameType()->associate($gameType);
+
+                $game->save();
+
+                $games[] = $game;
+            }
+            DB::commit();
+
+            return fractal()
+                ->collection($games)
+                ->transformWith(new GameTransformer)
+                ->toArray();
+        } else {
+            return response([
+                    'errors' => [
+                        'Request need to contain multiple objects. To update single game use PATCH /games/{id}. '
+                    ]
+            ], 400)->header('Content-Type', 'application/json');
+        }
     }
 
     /**

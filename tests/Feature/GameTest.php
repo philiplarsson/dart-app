@@ -48,7 +48,7 @@ class GameTest extends APITestCase
     {
         $game = factory(Game::class)->make();
 
-        $response = $this->post('/api/v1/games', [
+        $response = $this->json('POST', '/api/v1/games', [
             'game_type_id' => $game->game_type_id
         ]);
 
@@ -77,6 +77,25 @@ class GameTest extends APITestCase
 
         $response = $this->json('PATCH', '/api/v1/games/' . $game->id, [
             'game_type_id' => $gameType->id
+        ]);
+
+        $response->assertStatus(Response::HTTP_OK);
+    }
+
+    public function testUpdateMultipleGames()
+    {
+        $games = factory(Game::class, 2)->create();
+        $gameTypes = factory(GameType::class, 2)->create();
+
+        $response = $this->json('PATCH', '/api/v1/games', [
+            [
+                'id'           => $games[0]->id,
+                'game_type_id' => $gameTypes[0]->id
+            ],
+            [
+                'id'           => $games[1]->id,
+                'game_type_id' => $gameTypes[1]->id
+            ]
         ]);
 
         $response->assertStatus(Response::HTTP_OK);

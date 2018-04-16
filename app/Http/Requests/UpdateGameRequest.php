@@ -23,8 +23,17 @@ class UpdateGameRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'game_type_id' => 'required|exists:game_types,id',
-        ];
+        if (requestContainsMultipleObjects()) {
+            return [
+                '*.id' => 'required|integer|exists:games,id',
+                '*.game_type_id' => 'required|integer|exists:game_types,id'
+            ];
+        } else {
+            return [
+                'game_type_id' => 'required|integer|exists:game_types,id',
+            ];
+
+        }
+
     }
 }

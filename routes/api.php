@@ -33,6 +33,8 @@ Route::prefix('v1')->group(function () {
         Route::get('/', 'API\GameController@index');
         Route::post('/', 'API\GameController@store');
         Route::get('/{id}', 'API\GameController@show');
+        /* TODO: updateMultiple() and update() is confusing */
+        Route::patch('/', 'API\GameController@updateMultiple');
         Route::patch('/{id}', 'API\GameController@update');
         Route::delete('/{id}', 'API\GameController@destroy');
         Route::get('/{id}/throws', 'API\GameController@throws');
