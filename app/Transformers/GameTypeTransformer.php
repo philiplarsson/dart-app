@@ -15,9 +15,11 @@ class GameTypeTransformer extends TransformerAbstract
     public function transform(GameType $gameType)
     {
         return [
-            'id' => $gameType->id,
-            'name' => $gameType->name,
-            'description' => $gameType->description,
+            'id'               => $gameType->id,
+            'name'             => $gameType->name,
+            'description'      => $gameType->description,
+            'created_at'       => $gameType->created_at->toDateTimeString(),
+            'created_at_human' => $gameType->created_at->diffForHumans(),
         ];
     }
 }

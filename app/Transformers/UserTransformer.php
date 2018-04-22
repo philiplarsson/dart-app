@@ -15,11 +15,13 @@ class UserTransformer extends TransformerAbstract
     public function transform(User $user)
     {
         return [
-            'id' => $user->id,
-            'name' => $user->name,
-            'username' => $user->username,
-            'avatar' => $user->avatar(),
-            'account_type' => $user->accountType(),
+            'id'               => $user->id,
+            'name'             => $user->name,
+            'username'         => $user->username,
+            'avatar'           => $user->avatar(),
+            'account_type'     => $user->accountType(),
+            'created_at'       => $user->created_at->toDateTimeString(),
+            'created_at_human' => $user->created_at->diffForHumans(),
         ];
     }
 }

@@ -20,8 +20,8 @@ class GameTransformer extends TransformerAbstract
     public function transform(Game $game)
     {
         return [
-            'id' => $game->id,
-            'created_at' => $game->created_at->toDateTimeString(),
+            'id'               => $game->id,
+            'created_at'       => $game->created_at->toDateTimeString(),
             'created_at_human' => $game->created_at->diffForHumans(),
         ];
     }

@@ -20,10 +20,10 @@ class CastTransformer extends TransformerAbstract
     public function transform(Cast $cast)
     {
         return [
-            'id' => $cast->id,
-            'pie_value' => $cast->point()->pie_value,
-            'multiplier' => $cast->multiplier()->value,
-            'created_at' => $cast->created_at->toDateTimeString(),
+            'id'               => $cast->id,
+            'pie_value'        => $cast->point()->pie_value,
+            'multiplier'       => $cast->multiplier()->value,
+            'created_at'       => $cast->created_at->toDateTimeString(),
             'created_at_human' => $cast->created_at->diffForHumans(),
         ];
     }
