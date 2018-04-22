@@ -269,7 +269,7 @@ Update a single game type using this action. It takes a JSON object containing t
 + name (string) - Name of the gametype.
 
 + Request (application/json)
-    + Attributes (GameType NoId)
+    + Attributes (GameType NoFluff)
 
 + Response 200 (application/json)
     + Attributes
@@ -295,14 +295,14 @@ Create new gametypes using this action.
 + name (string) - Name of the gametype.
 
 + Request Create Single GameType (application/json)
-    + Attributes (GameType NoId)
+    + Attributes (GameType NoFluff)
 
 + Response 200 (application/json)
     + Attributes
         - data (GameType Full)
 
 + Request Create Multiple GameTypes (application/json)
-    + Attributes (array[GameType NoId])
+    + Attributes (array[GameType NoFluff])
 
 + Response 200 (application/json)
     + Attributes
@@ -317,7 +317,19 @@ You can update multiple gametypes using this action.
 + name (string) - Name of the gametype.
 
 + Request  (application/json)
-    + Attributes (array[GameType Full])
+
+        [
+         {
+          "id": 5,
+          "description": "Curabitur et neque quam. Fusce consectetur risus ac consectetur lobortis.",
+          "name": "201"
+         },
+         {
+           "id": 8,
+           "description": "Easy game for the beginner",
+           "name": "3 to 1"
+         }
+        ]
 
 + Response 200 (application/json)
     + Attributes
@@ -412,9 +424,9 @@ Update multiple games using this action.
 
 ## Throw Full (object)
 - id: `21` (number) - The unique ID of the throw.
+- Include Throw NoFluff
 - created_at: `2018-03-14 15:46:43` (string) - Date and time when the throw was created.
 - created_at_human: `3 weeks ago` (string) - Date and time when the throw was created in human friendly format.
-- Include Throw NoFluff
 
 ## Throw NoFluff (object)
 - user_id: `3` (number) - The id of the user who made the throw.
@@ -424,13 +436,13 @@ Update multiple games using this action.
 
 ## GameType Full (object)
 - id: `5` (number) - The unique ID of the gametype.
-- Include GameType NoId
-
-## GameType NoId (object)
-- name: `201` (string) - The unique name of the gametype.
-- description: `Curabitur et neque quam. Fusce consectetur risus ac consectetur lobortis.` (string) - Description of the gametype.
+- Include GameType NoFluff
 - created_at: `2018-04-22 10:37:45` (string) - Date and time when the gametype was created.
 - created_at_human: `1 second ago` (string) - Date and time when the gametype was created in human friendly format.
+
+## GameType NoFluff (object)
+- name: `201` (string) - The unique name of the gametype.
+- description: `Curabitur et neque quam. Fusce consectetur risus ac consectetur lobortis.` (string) - Description of the gametype.
 
 ## Game Full (object)
 - id: `1` (number) - The unique ID of the game.
