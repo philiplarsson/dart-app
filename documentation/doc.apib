@@ -420,6 +420,33 @@ Update multiple games using this action.
     + Attributes
         - data(array[Game Full])
 
+# Group Users
+
+Resource related to users in the API.
+
+## Users [/users/{user_id}]
+
++ Parameters
+    + user_id: 1 (required, number) - Id of the user in form of an integer
+
+### View a Single User [GET]
+
+Fetch the details of a single user using this action.
+
++ Response 200 (application/json)
+
+        {
+          "data": {
+            "id": 1,
+            "name": "Isac Hammes The Second",
+            "username": "isaac",
+            "avatar": "https:\/\/www.gravatar.com\/avatar\/0d1e761d0882962f66ab3abb44130f80?s=80&d=retro",
+            "account_type": "user",
+            "created_at": "2018-03-14 15:46:42",
+            "created_at_human": "1 month ago"
+          }
+        }
+
 # Data Structures
 
 ## Throw Full (object)
