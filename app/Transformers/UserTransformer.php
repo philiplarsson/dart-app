@@ -18,6 +18,7 @@ class UserTransformer extends TransformerAbstract
             'id'               => $user->id,
             'name'             => $user->name,
             'username'         => $user->username,
+            'email'            => $user->email,
             'avatar'           => $user->avatar(),
             'account_type'     => $user->accountType(),
             'created_at'       => $user->created_at->toDateTimeString(),
