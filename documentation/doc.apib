@@ -368,7 +368,7 @@ Update a single game using this action. It takes a JSON object containing the ga
     + Attributes
         - data (Game Full)
 
-## Delete Game [DELETE]
+### Delete Game [DELETE]
 
 + Response 204
 
@@ -434,18 +434,8 @@ Resource related to users in the API.
 Fetch the details of a single user using this action.
 
 + Response 200 (application/json)
-
-        {
-          "data": {
-            "id": 1,
-            "name": "Isac Hammes The Second",
-            "username": "isaac",
-            "avatar": "https:\/\/www.gravatar.com\/avatar\/0d1e761d0882962f66ab3abb44130f80?s=80&d=retro",
-            "account_type": "user",
-            "created_at": "2018-03-14 15:46:42",
-            "created_at_human": "1 month ago"
-          }
-        }
+    + Attribute
+        - data (User Full)
 
 ### Update a Single User [PATCH]
 
@@ -457,6 +447,89 @@ Update a single user using this action. It takes a JSON object containing the at
 + Response 200 (application/json)
     + Attributes
         - data (User Full)
+
+### Delete User [DELETE]
+
++ Response 204
+
+## User Collection [/users]
+
+### List All Users [GET]
+List all Users using this action.
+
++ Response 200 (apllication/json)
+    + Attributes
+        - data (array[User Full])
+
+### Create a New User [POST]
+Create a new user using this action.
+
++ Request Create Single User (application/json)
+    + Attributes (User WithPassword)
+
++ Response 200 (application/json)
+    + Attributes
+        - data (User Full)
+
++ Request Create Multiple Users (application/json)
+    + Attributes (array[User WithPassword])
+
++ Response 200 (application/json)
+    + Attributes
+        - data (array[User Full])
+
+### Update Multiple Users [PATCH]
+You can update multiple users using this action.
+
++ id (number, required) - Id of the user that should be updated.
++ name (string) - Name of the user.
++ username (string) - Username of the user.
++ email (string) - Email of the user.
+
++ Request (application/json)
+
+        [
+        {
+        	"id": 1,
+        	"name": "Ad the first",
+        	"username": "ad1",
+        	"email": "ad@example.com"
+        },
+        {
+        	"id": 2,
+        	"name": "Bo the Second",
+        	"username": "bojones",
+        	"email": "bosec@example.com"
+        }
+        ]
+
++ Response 200 (application/json)
+
+        {
+          "data": [
+            {
+              "id": 1,
+              "name": "Ad the first",
+              "username": "ad1",
+              "email": "ad@example.com",
+              "avatar": "https:\/\/www.gravatar.com\/avatar\/a4cff7c242ce2666d55d3edd6867ab60?s=80&d=retro",
+              "account_type": "user",
+              "created_at": "2018-03-14 15:46:42",
+              "created_at_human": "1 month ago"
+            },
+            {
+              "id": 2,
+              "name": "Bo the Second",
+              "username": "bojones",
+              "email": "bosec@example.com",
+              "avatar": "https:\/\/www.gravatar.com\/avatar\/34f715360a61c8fb87f5e6d6f4e52ba4?s=80&d=retro",
+              "account_type": "admin",
+              "created_at": "2018-03-14 15:46:42",
+              "created_at_human": "1 month ago"
+            }
+          ]
+        }
+
 
 # Data Structures
 
@@ -504,3 +577,9 @@ Update a single user using this action. It takes a JSON object containing the at
 - name: `Eve` (string) - Name of the user.
 - username: `ninjaEve` (string) - Username of the user.
 - email: `eve@example.com` (string) - Email of the user.
+
+## User WithPassword (object)
+- name: `Eve` (string) - Name of the user.
+- username: `ninjaEve` (string) - Username of the user.
+- email: `eve@example.com` (string) - Email of the user.
+- password: `superPassword` (string) - Password of the user.
