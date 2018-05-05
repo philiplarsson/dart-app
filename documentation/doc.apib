@@ -16,6 +16,13 @@ When making requests, the following headers should be set:
 - Accept: application/json
 - Content-Type: application/json
 
+## Authentication
+HTTP Basic access authentication is used for every route.
+This uses the email for the "username". So, if the email is kalle@example.com and the password is nicepassword then this should be encoded in base64 as kalle@example.com:nicepassword (and we get: a2FsbGVAZXhhbXBsZS5jb206bmljZXBhc3N3b3Jk).
+This is then sent as an header as such: Authorization Basic a2FsbGVAZXhhbXBsZS5jb206bmljZXBhc3N3b3Jk.
+
+Observe! Since the password is being sent in base64 (which is very easy to decode) this should only be used over HTTPS.
+
 ## Sorting and Pagination
 For some routes the order can be sorted in reverse order by using a query parameter:
 

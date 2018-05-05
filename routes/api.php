@@ -13,7 +13,8 @@ use Illuminate\Http\Request;
   |
 */
 
-Route::prefix('v1')->group(function () {
+Route::group(['prefix' => 'v1', 'middleware' => ['auth.basic']], function () {
+//Route::prefix('v1')->group(function () {
 
     Route::prefix('users')->group(function () {
         // Route::middleware('auth:api')->get('/user', function (Request $request) {
