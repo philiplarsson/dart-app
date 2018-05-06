@@ -11,9 +11,10 @@ class UserTest extends APITestCase
 {
     use RefreshDatabase;
 
-    public function testFetchSingleUser()
+    public function testFetchSingleUserAsAdmin()
     {
-        $user = factory(User::class)->create();
+        $user = factory(User::class)->create(['type_id' => $this->adminTypeId]);
+        $this->signIn($user);
 
         $response = $this->get('/api/v1/users/' . $user->id);
 
@@ -22,13 +23,32 @@ class UserTest extends APITestCase
             ->assertJsonFragment([
                 'id' => $user->id,
                 'name' => $user->name,
+                'email' => $user->email,
                 'username' => $user->username,
                 'account_type' => $user->accountType()
             ]);
     }
 
-    public function testFetchMultipleUsers()
+    public function testFetchSingleUserAsUser()
     {
+        $user = factory(User::class)->create(['type_id' => $this->userTypeId]);
+        $this->signIn($user);
+
+        $response = $this->get('/api/v1/users/' . $user->id);
+
+        $response
+            ->assertStatus(Response::HTTP_OK)
+            ->assertJsonFragment([
+                'id' => $user->id,
+                'username' => $user->username,
+                'avatar' => $user->avatar(),
+            ]);
+    }
+
+    public function testFetchMultipleUsersAsUser()
+    {
+        $this->signIn();
+
         $users = factory(User::class, 5)->create();
 
         $response = $this->get('/api/v1/users');
@@ -38,15 +58,16 @@ class UserTest extends APITestCase
         foreach ($users as $user) {
             $response->assertJsonFragment([
                 'id' => $user->id,
-                'name' => $user->name,
                 'username' => $user->username,
-                'account_type' => $user->accountType()
+                'avatar' => $user->avatar(),
             ]);
         }
     }
 
-    public function testCreateSingleUser()
+    public function testCreateSingleUserAsAdmin()
     {
+        $this->signInAsAdmin();
+
         $user = factory(User::class)->make();
 
         $response = $this->json('POST', '/api/v1/users', [
@@ -63,6 +84,9 @@ class UserTest extends APITestCase
                     'id',
                     'name',
                     'username',
+                    'email',
+                    'created_at',
+                    'created_at_human',
                     'avatar',
                     'account_type'
                 ]
@@ -74,8 +98,10 @@ class UserTest extends APITestCase
         ]);
     }
 
-    public function testCreateMultipleUsers()
+    public function testCreateMultipleUsersAsAdmin()
     {
+        $this->signInAsAdmin();
+
         $users = factory(User::class, 3)->make();
 
         $response = $this->json('POST', '/api/v1/users', [
@@ -113,6 +139,8 @@ class UserTest extends APITestCase
 
     public function testUpdateUser()
     {
+        $this->signInAsAdmin();
+
         $user = factory(User::class)->create();
         $newName = "Pinocchio";
 
@@ -130,6 +158,7 @@ class UserTest extends APITestCase
 
     public function testUpdateMultipleUsers()
     {
+        $this->signInAsAdmin();
         $users = factory(User::class, 5)->create();
 
         $newName = "Pinocchio";
@@ -161,6 +190,8 @@ class UserTest extends APITestCase
 
     public function testDeleteUser()
     {
+        $this->signInAsAdmin();
+
         $user = factory(User::class)->create();
 
         $response = $this->delete('api/v1/users/' . $user->id);

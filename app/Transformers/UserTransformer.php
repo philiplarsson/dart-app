@@ -3,6 +3,7 @@
 namespace App\Transformers;
 
 use App\User;
+use Illuminate\Support\Facades\Auth;
 use League\Fractal\TransformerAbstract;
 
 class UserTransformer extends TransformerAbstract
@@ -14,15 +15,22 @@ class UserTransformer extends TransformerAbstract
      */
     public function transform(User $user)
     {
-        return [
+        $userArray = [
             'id'               => $user->id,
-            'name'             => $user->name,
             'username'         => $user->username,
-            'email'            => $user->email,
             'avatar'           => $user->avatar(),
-            'account_type'     => $user->accountType(),
             'created_at'       => $user->created_at->toDateTimeString(),
             'created_at_human' => $user->created_at->diffForHumans(),
         ];
+
+        if (Auth::user()->isAdmin()) {
+            $userArray = array_merge($userArray, [
+                'name'             => $user->name,
+                'email'            => $user->email,
+                'account_type'     => $user->accountType(),
+            ]);
+        }
+
+        return $userArray;
     }
 }
