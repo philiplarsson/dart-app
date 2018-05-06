@@ -5,13 +5,13 @@ namespace App\Http\Controllers\API;
 use App\Cast;
 use App\User;
 use App\Game;
-use App\Exceptions\NoSuchSectionExistsException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Transformers\CastTransformer;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCastRequest;
 use App\Http\Requests\UpdateCastRequest;
+use App\Exceptions\NoSuchSectionExistsException;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 
 class CastController extends Controller
