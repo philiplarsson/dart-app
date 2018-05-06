@@ -17,16 +17,17 @@ Route::group(['prefix' => 'v1', 'middleware' => ['auth.basic']], function () {
 //Route::prefix('v1')->group(function () {
 
     Route::prefix('users')->group(function () {
-        // Route::middleware('auth:api')->get('/user', function (Request $request) {
-        //     return $request->user();
-        // });
+
+        Route::group(['middleware' => ['admin']], function () {
+            Route::post('/', 'API\UserController@store');
+            Route::delete('/{id}', 'API\UserController@destroy');
+            /* TODO: updateMultiple() and update() is confusing */
+            Route::patch('/', 'API\UserController@updateMultiple');
+        });
+
         Route::get('/', 'API\UserController@index');
-        Route::post('/', 'API\UserController@store');
         Route::get('/{id}', 'API\UserController@show');
-        /* TODO: updateMultiple() and update() is confusing */
-        Route::patch('/', 'API\UserController@updateMultiple');
         Route::patch('/{id}', 'API\UserController@update');
-        Route::delete('/{id}', 'API\UserController@destroy');
         Route::get('/{id}/throws', 'API\UserController@throws');
     });
 

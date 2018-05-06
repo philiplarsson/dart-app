@@ -98,6 +98,22 @@ class UserTest extends APITestCase
         ]);
     }
 
+    public function testCreateSingleUserAsUser()
+    {
+        $this->signIn();
+
+        $user = factory(User::class)->make();
+
+        $response = $this->json('POST', '/api/v1/users', [
+            "email" => $user->email,
+            "username" => $user->username,
+            "password" => $user->password,
+            "name" => $user->name
+        ]);
+
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
+    }
+
     public function testCreateMultipleUsersAsAdmin()
     {
         $this->signInAsAdmin();
@@ -137,7 +153,38 @@ class UserTest extends APITestCase
         }
     }
 
-    public function testUpdateUser()
+    public function testCreateMultipleUsersAsUser()
+    {
+        $this->signIn();
+
+        $users = factory(User::class, 3)->make();
+
+        $response = $this->json('POST', '/api/v1/users', [
+            [
+                "email" => $users[0]->email,
+                "username" => $users[0]->username,
+                "password" => $users[0]->password,
+                "name" => $users[0]->name
+            ],
+            [
+
+                "email" => $users[1]->email,
+                "username" => $users[1]->username,
+                "password" => $users[1]->password,
+                "name" => $users[1]->name
+            ],
+            [
+                "email" => $users[2]->email,
+                "username" => $users[2]->username,
+                "password" => $users[2]->password,
+                "name" => $users[2]->name
+            ]
+        ]);
+
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
+    }
+
+    public function testUpdateUserAsAdmin()
     {
         $this->signInAsAdmin();
 
@@ -156,10 +203,44 @@ class UserTest extends APITestCase
         ]);
     }
 
-    public function testUpdateMultipleUsers()
+    public function testUpdateUserAsUser()
+    {
+        $user = factory(User::class)->create();
+        $this->signIn($user);
+
+        $newName = "Pinocchio";
+
+        $response = $this->json('PATCH', '/api/v1/users/' . $user->id, [
+            "name" => $newName
+        ]);
+
+        $response->assertStatus(Response::HTTP_OK);
+
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'name' => $newName
+        ]);
+    }
+
+    public function testUpdateAnotherUserAsUser()
+    {
+        $this->signIn();
+
+        $user = factory(User::class)->create();
+
+        $newName = "Pinocchio";
+
+        $response = $this->json('PATCH', '/api/v1/users/' . $user->id, [
+            "name" => $newName
+        ]);
+
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
+    }
+
+    public function testUpdateMultipleUsersAsAdmin()
     {
         $this->signInAsAdmin();
-        $users = factory(User::class, 5)->create();
+        $users = factory(User::class, 2)->create();
 
         $newName = "Pinocchio";
         $newEmail = "alice@example.com";
@@ -188,7 +269,29 @@ class UserTest extends APITestCase
         ]);
     }
 
-    public function testDeleteUser()
+    public function testUpdateMultipleUsersAsUser()
+    {
+        $this->signIn();
+        $users = factory(User::class, 5)->create();
+
+        $newName = "Pinocchio";
+        $newEmail = "alice@example.com";
+
+        $response = $this->json('PATCH', '/api/v1/users', [
+                [
+                'id' => $users[0]->id,
+                'name' => $newName
+                ],
+                [
+                'id' => $users[1]->id,
+                'email' => $newEmail
+                ]
+        ]);
+
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
+    }
+
+    public function testDeleteUserAsAdmin()
     {
         $this->signInAsAdmin();
 
@@ -198,6 +301,20 @@ class UserTest extends APITestCase
 
         $response->assertStatus(Response::HTTP_NO_CONTENT);
         $this->assertDatabaseMissing('users', [
+            'id' => $user->id
+        ]);
+    }
+
+    public function testDeleteUserAsUser()
+    {
+        $this->signIn();
+
+        $user = factory(User::class)->create();
+
+        $response = $this->delete('api/v1/users/' . $user->id);
+
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
+        $this->assertDatabaseHas('users', [
             'id' => $user->id
         ]);
     }

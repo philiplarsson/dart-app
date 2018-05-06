@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\User;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateUserRequest extends FormRequest
@@ -13,7 +14,16 @@ class UpdateUserRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        $id = $this->route('id');
+
+        if (!isset($id)) {
+            // updateMultiple request
+            return $this->user()->isAdmin();
+        }
+
+        $user = User::find($id);
+
+        return $user && $this->user()->can('update', $user);
     }
 
     /**
