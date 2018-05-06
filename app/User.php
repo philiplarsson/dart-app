@@ -42,4 +42,9 @@ class User extends Authenticatable
     {
         return "https://www.gravatar.com/avatar/" . md5($this->email) .'?s=80&d=retro';
     }
+
+    public function isAdmin()
+    {
+        return $this->accountType() === "admin";
+    }
 }
