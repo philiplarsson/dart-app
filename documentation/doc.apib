@@ -447,6 +447,7 @@ Fetch the details of a single user using this action.
 ### Update a Single User [PATCH]
 
 Update a single user using this action. It takes a JSON object containing the attributes that you wish to change.
+This route requires an admin user.
 
 + Request (application/json)
     + Attributes (User NoFluff)
@@ -456,6 +457,9 @@ Update a single user using this action. It takes a JSON object containing the at
         - data (User Full)
 
 ### Delete User [DELETE]
+
+Delete a single user using this action.
+This route requires an admin user.
 
 + Response 204
 
@@ -470,6 +474,8 @@ List all Users using this action.
 
 ### Create a New User [POST]
 Create a new user using this action.
+
+This route requires an admin user.
 
 + Request Create Single User (application/json)
     + Attributes (User WithPassword)
@@ -492,6 +498,8 @@ You can update multiple users using this action.
 + name (string) - Name of the user.
 + username (string) - Username of the user.
 + email (string) - Email of the user.
+
+This route requires an admin user.
 
 + Request (application/json)
 
