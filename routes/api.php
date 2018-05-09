@@ -23,22 +23,24 @@ Route::group(['prefix' => 'v1', 'middleware' => ['auth.basic']], function () {
             Route::delete('/{id}', 'API\UserController@destroy');
             /* TODO: updateMultiple() and update() is confusing */
             Route::patch('/', 'API\UserController@updateMultiple');
+            Route::patch('/{id}', 'API\UserController@update');
         });
 
         Route::get('/', 'API\UserController@index');
         Route::get('/{id}', 'API\UserController@show');
-        Route::patch('/{id}', 'API\UserController@update');
         Route::get('/{id}/throws', 'API\UserController@throws');
     });
 
     Route::prefix('games')->group(function () {
+        Route::group(['middleware' => ['admin']], function () {
+            Route::delete('/{id}', 'API\GameController@destroy');
+        });
         Route::get('/', 'API\GameController@index');
         Route::post('/', 'API\GameController@store');
         Route::get('/{id}', 'API\GameController@show');
         /* TODO: updateMultiple() and update() is confusing */
         Route::patch('/', 'API\GameController@updateMultiple');
         Route::patch('/{id}', 'API\GameController@update');
-        Route::delete('/{id}', 'API\GameController@destroy');
         Route::get('/{id}/throws', 'API\GameController@throws');
     });
 
