@@ -87,6 +87,7 @@ Fetch the details of a single throw using this action.
 ### Update a Single Throw [PATCH]
 
 Update a single throw using this action. It takes a JSON object containing the details of a throw.
+This route requires an admin user.
 
 + user_id (number) - Id of the user who made the throw
 + game_id (number) - Id of the game this throw was made in
@@ -132,6 +133,8 @@ Update a single throw using this action. It takes a JSON object containing the d
         }
 
 ### Delete Throw [DELETE]
+
+This route requires an admin user.
 
 + Response 204
 
@@ -236,7 +239,7 @@ Moreover, bullseye is represented as 50 with a multiplier of 1.
 You can update multiple throws using this action.
 Note that if the user threw a value of 60, the pie_value should be 20 and the multiplier should be 3.
 Moreover, bullseye is represented as 50 with a multiplier of 1.
-
+This route requires an admin user.
 
 + id (number, required) - Id of the throw that should be updated.
 + user_id (number) - Id of the user who made the throw.

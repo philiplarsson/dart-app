@@ -14,10 +14,8 @@ use Illuminate\Http\Request;
 */
 
 Route::group(['prefix' => 'v1', 'middleware' => ['auth.basic']], function () {
-//Route::prefix('v1')->group(function () {
 
     Route::prefix('users')->group(function () {
-
         Route::group(['middleware' => ['admin']], function () {
             Route::post('/', 'API\UserController@store');
             Route::delete('/{id}', 'API\UserController@destroy');
@@ -57,12 +55,14 @@ Route::group(['prefix' => 'v1', 'middleware' => ['auth.basic']], function () {
     });
 
     Route::prefix('throws')->group(function () {
+        Route::group(['middleware' => ['admin']], function () {
+            Route::patch('/', 'API\CastController@updateMultiple');
+            Route::patch('/{id}', 'API\CastController@update');
+            Route::delete('/{id}', 'API\CastController@destroy');
+        });
         Route::get('/', 'API\CastController@index');
         Route::post('/', 'API\CastController@store');
         /* TODO: updateMultiple() and update() is confusing */
-        Route::patch('/', 'API\CastController@updateMultiple');
         Route::get('/{id}', 'API\CastController@show');
-        Route::patch('/{id}', 'API\CastController@update');
-        Route::delete('/{id}', 'API\CastController@destroy');
     });
 });
