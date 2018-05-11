@@ -13,6 +13,7 @@ class GameTypeTest extends APITestCase
 
     public function testCreateSingleGameType()
     {
+        $this->signIn();
         $gameType = factory(GameType::class)->make();
 
         $response = $this->json('POST', '/api/v1/gametypes', [
@@ -38,6 +39,7 @@ class GameTypeTest extends APITestCase
 
     public function testCreateMultipleGameTypes()
     {
+        $this->signIn();
         $gameTypes = factory(GameType::class, 2)->make();
 
         $response = $this->json('POST', '/api/v1/gametypes', [
@@ -67,6 +69,7 @@ class GameTypeTest extends APITestCase
 
     public function testUpdateSingleGameType()
     {
+        $this->signIn();
         $gameType = factory(GameType::class)->create();
 
         $newName = $this->fake->name;
@@ -96,6 +99,7 @@ class GameTypeTest extends APITestCase
 
     public function testUpdateMultipleGameTypes()
     {
+        $this->signIn();
         $gameTypes = factory(GameType::class, 2)->create();
 
         $newNames[] = $this->fake->name;
