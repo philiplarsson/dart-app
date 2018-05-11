@@ -14,6 +14,7 @@ class GameTest extends APITestCase
 
     public function testFetchSingleGame()
     {
+        $this->signIn();
         $game = factory(Game::class)->create();
 
         $response = $this->get('/api/v1/games/' . $game->id);
@@ -38,6 +39,7 @@ class GameTest extends APITestCase
 
     public function testFetchMultipleGames()
     {
+        $this->signIn();
         $games = factory(Game::class, 2)->create();
 
         $response = $this->get('/api/v1/games')
@@ -46,6 +48,7 @@ class GameTest extends APITestCase
 
     public function testCreateSingleGame()
     {
+        $this->signIn();
         $game = factory(Game::class)->make();
 
         $response = $this->json('POST', '/api/v1/games', [
@@ -72,6 +75,7 @@ class GameTest extends APITestCase
 
     public function testUpdateSingleGame()
     {
+        $this->signIn();
         $gameType = factory(GameType::class)->create();
         $game = factory(Game::class)->create();
 
@@ -84,6 +88,7 @@ class GameTest extends APITestCase
 
     public function testUpdateMultipleGames()
     {
+        $this->signIn();
         $games = factory(Game::class, 2)->create();
         $gameTypes = factory(GameType::class, 2)->create();
 
@@ -101,8 +106,19 @@ class GameTest extends APITestCase
         $response->assertStatus(Response::HTTP_OK);
     }
 
-    public function testDeleteSingleGame()
+    public function testDeleteSingleGameAsUser()
     {
+        $this->signIn();
+        $game = factory(Game::class)->create();
+
+        $response = $this->json('DELETE', '/api/v1/games/' . $game->id);
+
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
+    }
+
+    public function testDeleteSingleGameAsAdmin()
+    {
+        $this->signInAsAdmin();
         $game = factory(Game::class)->create();
 
         $response = $this->json('DELETE', '/api/v1/games/' . $game->id);
