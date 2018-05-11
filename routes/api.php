@@ -45,13 +45,15 @@ Route::group(['prefix' => 'v1', 'middleware' => ['auth.basic']], function () {
     });
 
     Route::prefix('gametypes')->group(function () {
+        Route::group(['middleware' => ['admin']], function () {
+            Route::delete('/{id}', 'API\GameTypeController@destroy');
+        });
         Route::get('/', 'API\GameTypeController@index');
         Route::post('/', 'API\GameTypeController@store');
         /* TODO: updateMultiple() and update() is confusing */
         Route::patch('/', 'API\GameTypeController@updateMultiple');
         Route::get('/{id}', 'API\GameTypeController@show');
         Route::patch('/{id}', 'API\GameTypeController@update');
-        Route::delete('/{id}', 'API\GameTypeController@destroy');
     });
 
     Route::prefix('throws')->group(function () {
