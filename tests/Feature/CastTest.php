@@ -15,6 +15,7 @@ class CastTest extends APITestCase
 
     public function testFetchSingleCast()
     {
+        $this->signIn();
         $cast = factory(Cast::class)->create();
 
         $response = $this->get('/api/v1/throws/' . $cast->id);
@@ -36,6 +37,7 @@ class CastTest extends APITestCase
 
     public function testCreateSingleCast()
     {
+        $this->signIn();
         $cast = factory(Cast::class)->create();
 
         $response = $this->json('POST', '/api/v1/throws', [
@@ -63,8 +65,9 @@ class CastTest extends APITestCase
         ]);
     }
 
-    public function testUpdateCast()
+    public function testUpdateCastAsAdmin()
     {
+        $this->signInAsAdmin();
         $cast = factory(Cast::class)->create();
 
         $game = factory(Game::class)->create();
@@ -91,8 +94,23 @@ class CastTest extends APITestCase
         ]);
     }
 
-    public function testUpdateMultipleCasts()
+    public function testUpdateCastAsUser()
     {
+        $this->signIn();
+        $cast = factory(Cast::class)->create();
+
+        $game = factory(Game::class)->create();
+
+        $response = $this->json('PATCH', '/api/v1/throws/' . $cast->id, [
+            "game_id" => $game->id
+        ]);
+
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
+    }
+
+    public function testUpdateMultipleCastsAsAdmin()
+    {
+        $this->signInAsAdmin();
         $casts = factory(Cast::class, 2)->create();
         $user = factory(User::class)->create();
 
@@ -140,8 +158,19 @@ class CastTest extends APITestCase
         ]);
     }
 
-    public function testDeleteCast()
+    public function testDeleteCastAsUser()
     {
+        $this->signIn();
+        $cast = factory(Cast::class)->create();
+
+        $response = $this->delete('/api/v1/throws/' . $cast->id);
+
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
+    }
+
+    public function testDeleteCastAsAdmin()
+    {
+        $this->signInAsAdmin();
         $cast = factory(Cast::class)->create();
 
         $response = $this->delete('/api/v1/throws/' . $cast->id);
