@@ -21,8 +21,9 @@ Route::group(['prefix' => 'v1', 'middleware' => ['auth.basic']], function () {
             Route::delete('/{id}', 'API\UserController@destroy');
             /* TODO: updateMultiple() and update() is confusing */
             Route::patch('/', 'API\UserController@updateMultiple');
-            Route::patch('/{id}', 'API\UserController@update');
         });
+
+        Route::patch('/{id}', 'API\UserController@update');
 
         Route::get('/', 'API\UserController@index');
         Route::get('/{id}', 'API\UserController@show');
