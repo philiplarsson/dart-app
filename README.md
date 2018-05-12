@@ -19,6 +19,89 @@ Generate documentation
 dartapp/documentation $ aglio -i doc.apib -o ../public/documentation.html
 ```
 
+Deploying to Heroku
+-------------------
+
+The following env variables need to be set:
+
+- APP_KEY (can be set by using `heroku config:set APP_KEY=$(php artisan --no-ansi key:generate --show)` )
+- LOG_CHANNEL (which probably should be `errorlog`)
+- DB_CONNECTION
+- DB_HOST
+- DB_USERNAME
+- DB_PASSWORD
+- DB_PORT
+- DB_DATABASE
+
+Then create tables and optimize autoloaders by first running a shell environment
+on the app `heroku run bash`.
+
+Optimize autoloader: `composer install --optimize-autoloader`.
+Optimize configuration loading: `php artisan config:cache`.
+Since we are using a closure to present the documentation, we can't optimize the
+route loading, but if you remove the documentation in `routes/web.php` you could run: `php artisan route:cache` to do so.
+
+Running all migrations: `php artisan migrate`. 
+
+Then you should run atleast 3 seeders:
+- `php artisan db:seed --class=MultiplierSeeder` to seed the `multipliers` table
+  with the standard 1,2 and 3 multiplier value.
+- `php artisan db:seed --class=PointSeeder` to seed the `points` table with all possible points.
+- `php artisan db:seed --class=UserTypeSeeder` to seed `user_types` table with
+  admin and users.
+
+If you want to create dummy users and dummy data you can run all seeders with:
+- `php artisan db:seed`.
+
+Next you should create a user. Some routes need admin users so below we will
+create one admin user and one "regular" user.
+
+`php artisan tinker` to get a php shell.
+
+Fetch id for users and admin:
+```
+$userTypeId = DB::table('user_types')->where('type', 'user')->first()->id
+$adminTypeId = DB::table('user_types')->where('type', 'admin')->first()->id;
+```
+
+Then to create a regular user:
+```
+$bob = new User([
+... 'name' => 'Bob Bobson',
+... 'username' => 'bobb',
+... 'email' => 'bob@example.com',
+... 'type_id' => $userTypeId,
+... 'password' => bcrypt('pw')
+... ]);
+=> App\User {#817
+     name: "Bob Bobson",
+     username: "bobb",
+     email: "bob@example.com",
+     type_id: 1,
+   }
+>>> $bob->save();
+=> true
+```
+
+And for admin user:
+```
+$alice = new User([
+... 'name' => 'Alice W',
+... 'username' => 'alicew',
+... 'email' => 'alice@example.com',
+... 'type_id' => $adminTypeId,
+... 'password' => bcrypt('pw')
+... ]);
+=> App\User {#802
+     name: "Alice W",
+     username: "alicew",
+     email: "alice@example.com",
+     type_id: 2,
+   }
+>>> $alice->save();
+=> true
+```
+
 API
 ---
 
