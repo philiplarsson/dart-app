@@ -7,11 +7,6 @@
 DartApp
 =======
 
-Documentation is at: <https://secure-scrubland-72615.herokuapp.com>.
-
-Request example:
-<https://secure-scrubland-72615.herokuapp.com/api/v1/games>.
-
 Generate documentation
 ----------------------
 
@@ -105,7 +100,7 @@ $alice = new User([
 API
 ---
 
-DartApp uses a RESTful API. The API is Work In Progress.
+DartApp uses a RESTful API. 
 
 DartApp uses 4 main endpoints.
 
