@@ -36,7 +36,7 @@ Optimize configuration loading: `php artisan config:cache`.
 Since we are using a closure to present the documentation, we can't optimize the
 route loading, but if you remove the documentation in `routes/web.php` you could run: `php artisan route:cache` to do so.
 
-Running all migrations: `php artisan migrate`. 
+Running all migrations: `php artisan migrate`.
 
 Then you should run atleast 3 seeders:
 - `php artisan db:seed --class=MultiplierSeeder` to seed the `multipliers` table
@@ -48,7 +48,7 @@ Then you should run atleast 3 seeders:
 If you want to create dummy users and dummy data you can run all seeders with:
 - `php artisan db:seed`.
 
-Next you should create a user. Some routes need admin users so below we will
+Next you should create a user. Some routes require admin users so below we will
 create one admin user and one "regular" user.
 
 `php artisan tinker` to get a php shell.
@@ -100,7 +100,7 @@ $alice = new User([
 API
 ---
 
-DartApp uses a RESTful API. 
+DartApp uses a RESTful API.
 
 DartApp uses 4 main endpoints.
 
@@ -115,9 +115,11 @@ When making requests, the following headers should be set:
 -   Accept: application/json
 -   Content-Type: application/json
 
-Available endpoints can be seen in the api-blueprint in the 
-documentation folder. If app is deplayed they documentation can be generated and 
-seen can bee seen at the main page (/).
+Available endpoints can be seen in the api-blueprint in the
+documentation folder. A HTML representation of the api-blueprint can be
+generated
+(using `dartapp/documentation $ aglio -i doc.apib -o ../public/documentation.html`)
+and then seen at the main route (`/`).
 
 
 ### Sorting and Pagination
@@ -139,3 +141,4 @@ seen can bee seen at the main page (/).
     parameter `page` like so:
 
     -   GET `http://localhost:8000/api/v1/throws?page=2`
+
