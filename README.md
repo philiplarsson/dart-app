@@ -115,64 +115,10 @@ When making requests, the following headers should be set:
 -   Accept: application/json
 -   Content-Type: application/json
 
-Available endpoints can be seen below. A api-blueprint is being worked
-on and can be seen in the documentation folder.
+Available endpoints can be seen in the api-blueprint in the 
+documentation folder. If app is deplayed they documentation can be generated and 
+seen can bee seen at the main page (/).
 
-### Available Routes
-
-#### Games
-
--   GET : api/v1/games
-
--   POST : api/v1/games
-
--   GET : api/v1/games/{id}
-
--   DELETE : api/v1/games/{id}
-
--   PATCH : api/v1/games/{id}
-
--   GET : api/v1/games/{id}/throws
-
-#### GameTypes
-
--   POST : api/v1/gametypes
-
--   GET : api/v1/gametypes
-
--   PATCH : api/v1/gametypes/{id}
-
--   GET : api/v1/gametypes/{id}
-
--   DELETE : api/v1/gametypes/{id}
-
-#### Throws
-
--   GET : api/v1/throws
-
--   POST : api/v1/throws
-
--   PATCH : api/v1/throws
-
--   GET : api/v1/throws/{id}
-
--   PATCH : api/v1/throws/{id}
-
--   DELETE : api/v1/throws/{id}
-
-#### Users
-
--   POST : api/v1/users
-
--   GET : api/v1/users
-
--   DELETE : api/v1/users/{id}
-
--   PATCH : api/v1/users/{id}
-
--   GET : api/v1/users/{id}
-
--   GET : api/v1/users/{id}/throws
 
 ### Sorting and Pagination
 
